@@ -1,29 +1,39 @@
 === TEST USERS ===
 
 FARMER 1: Alice Muthoni
-- user_id: 5
+- user_id: 7
 - email: alice.muthoni@test.com
 - password: password123
+- location: Kiambu
 - token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlclR5cGUiOiJmYXJtZXIiLCJpYXQiOjE3Njk0MDcxODQsImV4cCI6MTc3MDAxMTk4NH0.sadKEf-58piowNJkTtT3CccjuFG59B0Kt17D5Q845l0
+- produce:
+    * listing_id 5 - Fresh Tomatoes (100kg, 70 KES) - AVAILABLE
+    * listing_id 6 - Organic Kale - DELETED
 
 
 FARMER 2: Bob Kimani
-- user_id: 6
+- user_id: 8
 - email: bob.kimani@test.com
 - password: password123
+- location:Nakuru
 - token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCw
+- produce:
+  * listing_id 7 - Yellow Maize (500kg, 45 KES) - AVAILABLE
 
 
 EXPERT 1: Dr. Carol Wanjiru
-- user_id: 7
+- user_id: 9
 - email: carol.wanjiru@test.com
 - password: password123
+- location: Nairobi
 - token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlclR5cGUiOiJleHBlcnQiLCJpYXQiOjE3Njk0MDU4MDUsImV4cCI6MTc3MDAxMDYwNX0.isH-2SPaK5wawLCes20qNvSheeNxFVvbTu5lSd_0QQ4
 
 
 BUYER 1: David Omondi
-- user_id: 8
+- user_id: 10
 - email: david.omondi@test.com
 - password: password123
+- location: Mombasa
 - token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJUeXBlIjoiYnV5ZXIiLCJpYXQiOjE3Njk0MDU5NjcsImV4cCI6MTc3MDAxMDc2N30.Z6MC-1I6PBWqt4mKW1yRblMLJySm1TGpFVNcR-egtrg
+
 

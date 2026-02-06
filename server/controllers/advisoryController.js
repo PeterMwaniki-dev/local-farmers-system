@@ -40,15 +40,8 @@ const {
  */
 const createAdvisoryPost = async (req, res) => {
     try {
-        const {
-            title,
-            content,
-            category,
-            tags,
-            image_url
-        } = req.body;
+        const { title, content, category, tags, image_url } = req.body;
 
-        // Validation
         if (!title || !content) {
             return res.status(400).json({
                 success: false,
@@ -56,7 +49,6 @@ const createAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Create post
         const postId = await createPost({
             expert_id: req.user.user_id,
             title,
@@ -66,7 +58,6 @@ const createAdvisoryPost = async (req, res) => {
             image_url
         });
 
-        // Get the created post
         const newPost = await getPostById(postId);
 
         res.status(201).json({
@@ -91,26 +82,17 @@ const createAdvisoryPost = async (req, res) => {
  */
 const getAdvisoryPosts = async (req, res) => {
     try {
-        const {
-            category,
-            search,
-            expert_id,
-            page = 1,
-            limit = 20
-        } = req.query;
+        const { category, search, expert_id, page = 1, limit = 20 } = req.query;
 
-        // Build filters object
         const filters = {};
         if (category) filters.category = category;
         if (search) filters.search = search;
         if (expert_id) filters.expert_id = parseInt(expert_id);
 
-        // Calculate pagination
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
         const offset = (pageNum - 1) * limitNum;
 
-        // Get posts and total count
         const [posts, total] = await Promise.all([
             getAllPosts(filters, limitNum, offset),
             getPostCount(filters)
@@ -119,7 +101,7 @@ const getAdvisoryPosts = async (req, res) => {
         res.status(200).json({
             success: true,
             count: posts.length,
-            total: total,
+            total,
             page: pageNum,
             pages: Math.ceil(total / limitNum),
             data: posts
@@ -143,7 +125,6 @@ const getAdvisoryPost = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Get post
         const post = await getPostById(id);
 
         if (!post) {
@@ -153,7 +134,6 @@ const getAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Increment view count
         await incrementPostViews(id);
 
         res.status(200).json({
@@ -177,7 +157,11 @@ const getAdvisoryPost = async (req, res) => {
  */
 const getMyPosts = async (req, res) => {
     try {
+        console.log('🔍 Getting posts for user_id:', req.user.user_id);
+
         const posts = await getPostsByExpert(req.user.user_id);
+
+        console.log('📊 Posts found:', posts.length);
 
         res.status(200).json({
             success: true,
@@ -204,7 +188,6 @@ const updateAdvisoryPost = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
-        // Check if post exists
         const post = await getPostById(id);
 
         if (!post) {
@@ -214,7 +197,6 @@ const updateAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Check if user owns this post
         if (post.expert_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -222,7 +204,6 @@ const updateAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Update post
         const updated = await updatePost(id, updateData);
 
         if (!updated) {
@@ -232,7 +213,6 @@ const updateAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Get updated post
         const updatedPost = await getPostById(id);
 
         res.status(200).json({
@@ -259,7 +239,6 @@ const deleteAdvisoryPost = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Check if post exists
         const post = await getPostById(id);
 
         if (!post) {
@@ -269,7 +248,6 @@ const deleteAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Check if user owns this post
         if (post.expert_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -277,7 +255,6 @@ const deleteAdvisoryPost = async (req, res) => {
             });
         }
 
-        // Delete post
         await deletePost(id);
 
         res.status(200).json({
@@ -305,13 +282,8 @@ const deleteAdvisoryPost = async (req, res) => {
  */
 const createAdvisoryQuestion = async (req, res) => {
     try {
-        const {
-            title,
-            question_text,
-            category
-        } = req.body;
+        const { title, question_text, category } = req.body;
 
-        // Validation
         if (!title || !question_text) {
             return res.status(400).json({
                 success: false,
@@ -319,7 +291,6 @@ const createAdvisoryQuestion = async (req, res) => {
             });
         }
 
-        // Create question
         const questionId = await createQuestion({
             farmer_id: req.user.user_id,
             title,
@@ -327,7 +298,6 @@ const createAdvisoryQuestion = async (req, res) => {
             category
         });
 
-        // Get the created question
         const newQuestion = await getQuestionById(questionId);
 
         res.status(201).json({
@@ -352,26 +322,17 @@ const createAdvisoryQuestion = async (req, res) => {
  */
 const getAdvisoryQuestions = async (req, res) => {
     try {
-        const {
-            category,
-            search,
-            status,
-            page = 1,
-            limit = 20
-        } = req.query;
+        const { category, search, status, page = 1, limit = 20 } = req.query;
 
-        // Build filters object
         const filters = {};
         if (category) filters.category = category;
         if (search) filters.search = search;
         if (status) filters.status = status;
 
-        // Calculate pagination
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
         const offset = (pageNum - 1) * limitNum;
 
-        // Get questions and total count
         const [questions, total] = await Promise.all([
             getAllQuestions(filters, limitNum, offset),
             getQuestionCount(filters)
@@ -380,7 +341,7 @@ const getAdvisoryQuestions = async (req, res) => {
         res.status(200).json({
             success: true,
             count: questions.length,
-            total: total,
+            total,
             page: pageNum,
             pages: Math.ceil(total / limitNum),
             data: questions
@@ -396,7 +357,7 @@ const getAdvisoryQuestions = async (req, res) => {
 };
 
 /**
- * @desc    Get single question by ID with all responses
+ * @desc    Get single question by ID
  * @route   GET /api/advisory/questions/:id
  * @access  Public
  */
@@ -404,7 +365,6 @@ const getAdvisoryQuestion = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Get question with responses
         const question = await getQuestionById(id);
 
         if (!question) {
@@ -414,7 +374,6 @@ const getAdvisoryQuestion = async (req, res) => {
             });
         }
 
-        // Increment view count
         await incrementQuestionViews(id);
 
         res.status(200).json({
@@ -465,7 +424,6 @@ const updateAdvisoryQuestion = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
-        // Get question (without responses for update check)
         const [rows] = await require('../config/db').pool.query(
             'SELECT * FROM advisory_questions WHERE question_id = ?',
             [id]
@@ -480,7 +438,6 @@ const updateAdvisoryQuestion = async (req, res) => {
 
         const question = rows[0];
 
-        // Check if user owns this question
         if (question.farmer_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -488,7 +445,6 @@ const updateAdvisoryQuestion = async (req, res) => {
             });
         }
 
-        // Update question
         const updated = await updateQuestion(id, updateData);
 
         if (!updated) {
@@ -498,7 +454,6 @@ const updateAdvisoryQuestion = async (req, res) => {
             });
         }
 
-        // Get updated question
         const updatedQuestion = await getQuestionById(id);
 
         res.status(200).json({
@@ -525,7 +480,6 @@ const deleteAdvisoryQuestion = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Get question
         const [rows] = await require('../config/db').pool.query(
             'SELECT * FROM advisory_questions WHERE question_id = ?',
             [id]
@@ -540,7 +494,6 @@ const deleteAdvisoryQuestion = async (req, res) => {
 
         const question = rows[0];
 
-        // Check if user owns this question
         if (question.farmer_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -548,7 +501,6 @@ const deleteAdvisoryQuestion = async (req, res) => {
             });
         }
 
-        // Delete question
         await deleteQuestion(id);
 
         res.status(200).json({
@@ -579,7 +531,6 @@ const createAdvisoryResponse = async (req, res) => {
         const { id } = req.params;
         const { response_text } = req.body;
 
-        // Validation
         if (!response_text) {
             return res.status(400).json({
                 success: false,
@@ -587,7 +538,6 @@ const createAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Check if question exists
         const question = await getQuestionById(id);
 
         if (!question) {
@@ -597,14 +547,12 @@ const createAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Create response
         const responseId = await createResponse({
             question_id: id,
             expert_id: req.user.user_id,
             response_text
         });
 
-        // Get the created response
         const newResponse = await getResponseById(responseId);
 
         res.status(201).json({
@@ -632,7 +580,6 @@ const updateAdvisoryResponse = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
-        // Check if response exists
         const response = await getResponseById(id);
 
         if (!response) {
@@ -642,7 +589,6 @@ const updateAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Check if user owns this response
         if (response.expert_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -650,7 +596,6 @@ const updateAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Update response
         const updated = await updateResponse(id, updateData);
 
         if (!updated) {
@@ -660,7 +605,6 @@ const updateAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Get updated response
         const updatedResponse = await getResponseById(id);
 
         res.status(200).json({
@@ -687,7 +631,6 @@ const deleteAdvisoryResponse = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Check if response exists
         const response = await getResponseById(id);
 
         if (!response) {
@@ -697,7 +640,6 @@ const deleteAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Check if user owns this response
         if (response.expert_id !== req.user.user_id) {
             return res.status(403).json({
                 success: false,
@@ -705,7 +647,6 @@ const deleteAdvisoryResponse = async (req, res) => {
             });
         }
 
-        // Delete response
         await deleteResponse(id);
 
         res.status(200).json({
@@ -730,7 +671,7 @@ module.exports = {
     getMyPosts,
     updateAdvisoryPost,
     deleteAdvisoryPost,
-    
+
     // Questions
     createAdvisoryQuestion,
     getAdvisoryQuestions,
@@ -738,7 +679,7 @@ module.exports = {
     getMyQuestions,
     updateAdvisoryQuestion,
     deleteAdvisoryQuestion,
-    
+
     // Responses
     createAdvisoryResponse,
     updateAdvisoryResponse,
