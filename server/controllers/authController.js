@@ -146,6 +146,8 @@ const login = async (req, res) => {
 
         // Check if user exists
         const user = await findUserByEmail(email);
+        console.log('🔍 User found:', user ? 'YES' : 'NO'); // ADD THIS
+        console.log('🔍 User data:', user); // ADD THIS
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -163,6 +165,7 @@ const login = async (req, res) => {
 
         // Check password
         const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
+        console.log('🔑 Password match:', isPasswordMatch);
         if (!isPasswordMatch) {
             return res.status(401).json({
                 success: false,

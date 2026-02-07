@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -29,7 +30,11 @@ import ChangePassword from './pages/ChangePassword';
 // Home redirect component
 const HomeRedirect = () => {
   const { isAuthenticated } = useAuth();
-  return <Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />;
+  // Show landing page if not authenticated, otherwise go to dashboard
+  if (!isAuthenticated) {
+    return <Landing />;
+  }
+  return <Navigate to="/dashboard" replace />;
 };
 
 function App() {
@@ -147,7 +152,7 @@ function App() {
             }
           />
 
-          {/* Redirect root to login or dashboard */}
+          {/* Redirect root to landing or dashboard */}
           <Route path="/" element={<HomeRedirect />} />
 
           {/* 404 - Not Found */}

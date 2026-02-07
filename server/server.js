@@ -57,6 +57,7 @@ app.use('/api/advisory', require('./routes/advisoryRoutes'));
 app.use('/api/buyers', require('./routes/buyerRoutes'));
 app.use('/api/forum', require('./routes/forumRoutes'));
 app.use('/api/trends', require('./routes/trendsRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // ============================================
 // ERROR HANDLING
