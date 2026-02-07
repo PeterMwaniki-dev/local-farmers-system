@@ -26,11 +26,14 @@ import MarketTrends from './pages/MarketTrends';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import ChangePassword from './pages/ChangePassword';
+import ManageUsers from './pages/ManageUsers';
+import ManageProduce from './pages/ManageProduce';
+import ManageForum from './pages/ManageForum';
+import AdminReports from './pages/AdminReports';
 
 // Home redirect component
 const HomeRedirect = () => {
   const { isAuthenticated } = useAuth();
-  // Show landing page if not authenticated, otherwise go to dashboard
   if (!isAuthenticated) {
     return <Landing />;
   }
@@ -84,6 +87,40 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChangePassword />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <ManageUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/produce"
+            element={
+              <ProtectedRoute>
+                <ManageProduce />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/forum"
+            element={
+              <ProtectedRoute>
+                <ManageForum />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/reports"
+            element={
+              <ProtectedRoute>
+                <AdminReports />
               </ProtectedRoute>
             }
           />
