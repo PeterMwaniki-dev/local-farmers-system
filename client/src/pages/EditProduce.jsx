@@ -242,6 +242,24 @@ const EditProduce = () => {
                                     />
                                 </div>
 
+                                {/* Status */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Status
+                                    </label>
+                                    <select
+                                        name="status"
+                                        value={formData.status}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    >                                     
+                                        <option value="available">Available</option>
+                                        <option value="sold">Sold</option>
+                                        <option value="expired">Expired</option>
+
+                                    </select>
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Quality Grade

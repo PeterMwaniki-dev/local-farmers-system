@@ -13,16 +13,17 @@ const {
     getProduceCategories
 } = require('../controllers/produceController');
 const { protect, authorize } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 // Public routes
-router.get('/', getProduceListings);                    // Get all produce (with filters)
-router.get('/categories', getProduceCategories);        // Get all categories
-router.get('/:id', getProduceListing);                  // Get single produce
+router.get('/', getProduceListings);
+router.get('/categories', getProduceCategories);
+router.get('/:id', getProduceListing);
 
 // Protected routes (Farmers only)
-router.post('/', protect, authorize('farmer'), createProduceListing);           // Create listing
-router.get('/farmer/my-listings', protect, authorize('farmer'), getMyListings); // Get my listings
-router.put('/:id', protect, authorize('farmer'), updateProduceListing);         // Update listing
-router.delete('/:id', protect, authorize('farmer'), deleteProduceListing);      // Delete listing
+router.post('/', protect, authorize('farmer'), upload.single('image'), createProduceListing);
+router.get('/farmer/my-listings', protect, authorize('farmer'), getMyListings);
+router.put('/:id', protect, authorize('farmer'), upload.single('image'), updateProduceListing);
+router.delete('/:id', protect, authorize('farmer'), deleteProduceListing);
 
 module.exports = router;

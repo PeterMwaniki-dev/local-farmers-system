@@ -30,9 +30,11 @@ const createProduceListing = async (req, res) => {
             available_until,
             description,
             quality_grade,
-            location,
-            image_url
+            location
         } = req.body;
+
+        // Get image URL if file was uploaded
+        const image_url = req.file ? `/uploads/produce/${req.file.filename}` : null;
 
         // Validation
         if (!produce_name || !quantity || !unit || !location) {
@@ -214,7 +216,12 @@ const getMyListings = async (req, res) => {
 const updateProduceListing = async (req, res) => {
     try {
         const { id } = req.params;
-        const updateData = req.body;
+        const updateData = { ...req.body };
+
+        // Get image URL if file was uploaded
+        if (req.file) {
+            updateData.image_url = `/uploads/produce/${req.file.filename}`;
+        }
 
         // Check if listing exists
         const listing = await getProduceById(id);

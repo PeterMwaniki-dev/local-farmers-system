@@ -200,7 +200,7 @@ const BrowseProduce = () => {
                     </div>
                 </div>
 
-                {/* Produce Grid */}
+                {/* ✅ REPLACED PRODUCE GRID */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                     {loading ? (
                         <div className="text-center py-12">
@@ -211,101 +211,95 @@ const BrowseProduce = () => {
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                             {error}
                         </div>
-                    ) : produce.length === 0 ? (
-                        <div className="text-center py-12">
-                            <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p className="text-gray-600 mb-2">No produce found matching your filters.</p>
-                            <button
-                                onClick={clearFilters}
-                                className="text-green-600 hover:text-green-700 font-medium"
-                            >
-                                Clear filters to see all produce
-                            </button>
-                        </div>
                     ) : (
                         <>
-                            <div className="mb-4">
-                                <p className="text-gray-600">
-                                    Showing <span className="font-semibold">{produce.length}</span> produce listings
-                                </p>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                {produce.map((item) => (
-                                    <div
-                                        key={item.listing_id}
-                                        className="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow bg-white"
-                                    >
-                                        {/* Header */}
-                                        <div className="mb-3">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h3 className="text-lg font-bold text-gray-800">
-                                                    {item.produce_name}
-                                                </h3>
-                                                <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">
-                                                    {item.category}
-                                                </span>
+                            {/* Produce Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {produce.length === 0 ? (
+                                    <div className="col-span-full text-center py-12">
+                                        <p className="text-gray-500 text-lg">No produce listings found</p>
+                                    </div>
+                                ) : (
+                                    produce.map((item) => (
+                                        <div
+                                            key={item.listing_id}
+                                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition"
+                                        >
+                                            {/* Product Image */}
+                                            <div className="h-48 bg-gray-200 overflow-hidden">
+                                                {item.image_url ? (
+                                                    <img
+                                                        src={`http://localhost:5000${item.image_url}`}
+                                                        alt={item.produce_name}
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                            e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
+                                                        <svg className="w-20 h-20 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
                                             </div>
-                                            {item.quality_grade && (
-                                                <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                                                    {item.quality_grade}
-                                                </span>
-                                            )}
-                                        </div>
 
-                                        {/* Details */}
-                                        <div className="space-y-2 mb-4">
-                                            <div className="flex justify-between text-sm">
-                                                <span className="text-gray-600">Quantity:</span>
-                                                <span className="font-semibold text-gray-800">
-                                                    {item.quantity} {item.unit}
-                                                </span>
-                                            </div>
-                                            
-                                            {item.price_per_unit && (
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-600">Price:</span>
-                                                    <span className="font-semibold text-green-600">
-                                                        KES {item.price_per_unit}/{item.unit}
+                                            {/* Product Info */}
+                                            <div className="p-6">
+                                                <div className="flex items-start justify-between mb-2">
+                                                    <h3 className="text-xl font-bold text-gray-800">{item.produce_name}</h3>
+                                                    {item.category && (
+                                                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
+                                                            {item.category}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2 mb-4">
+                                                    <p className="text-gray-600">
+                                                        <span className="font-semibold">Quantity:</span> {item.quantity} {item.unit}
+                                                    </p>
+                                                    {item.price_per_unit && (
+                                                        <p className="text-green-600 font-bold text-lg">
+                                                            KES {parseFloat(item.price_per_unit).toLocaleString()} per {item.unit}
+                                                        </p>
+                                                    )}
+                                                    <p className="text-gray-600">
+                                                        <span className="font-semibold">Location:</span> {item.location}
+                                                    </p>
+                                                    {item.quality_grade && (
+                                                        <p className="text-gray-600">
+                                                            <span className="font-semibold">Grade:</span> {item.quality_grade}
+                                                        </p>
+                                                    )}
+                                                    <p className="text-gray-600">
+                                                        <span className="font-semibold">Farmer:</span> {item.farmer_name}
+                                                    </p>
+                                                </div>
+
+                                                {item.description && (
+                                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{item.description}</p>
+                                                )}
+
+                                                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                                    <span>👁 {item.views_count} views</span>
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                        item.status === 'available' ? 'bg-green-100 text-green-800' :
+                                                        item.status === 'sold' ? 'bg-blue-100 text-blue-800' :
+                                                        'bg-red-100 text-red-800'
+                                                    }`}>
+                                                        {item.status}
                                                     </span>
                                                 </div>
-                                            )}
-                                            
-                                            <div className="flex justify-between text-sm">
-                                                <span className="text-gray-600">Location:</span>
-                                                <span className="font-semibold text-gray-800">
-                                                    {item.location}
-                                                </span>
-                                            </div>
 
-                                            {item.description && (
-                                                <p className="text-sm text-gray-600 mt-3 line-clamp-2">
-                                                    {item.description}
-                                                </p>
-                                            )}
-                                        </div>
-
-                                        {/* Farmer Info */}
-                                        <div className="border-t pt-3 mt-3">
-                                            <div className="flex items-center justify-between text-sm">
-                                                <div>
-                                                    <p className="text-gray-500 text-xs">Farmer</p>
-                                                    <p className="font-semibold text-gray-800">
-                                                        {item.farmer_name}
-                                                    </p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-gray-500 text-xs">Contact</p>
-                                                    <p className="font-semibold text-gray-800">
-                                                        {item.farmer_phone}
-                                                    </p>
-                                                </div>
+                                                <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition">
+                                                    View Details
+                                                </button>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                                )}
                             </div>
                         </>
                     )}

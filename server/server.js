@@ -25,6 +25,9 @@ app.use(cors({
   credentials: true
 }));
 
+// Serve uploaded files statically
+app.use('/uploads', express.static('uploads'));
+
 // Request logging middleware (for development)
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);

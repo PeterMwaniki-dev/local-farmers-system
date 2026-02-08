@@ -144,40 +144,68 @@ const FarmerDashboard = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {listings.map((produce) => (
-                                <div key={produce.listing_id} className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h3 className="text-lg font-semibold text-gray-800">{produce.produce_name}</h3>
-                                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                                            produce.status === 'available' 
-                                                ? 'bg-green-100 text-green-800' 
-                                                : 'bg-gray-100 text-gray-800'
-                                        }`}>
-                                            {produce.status}
-                                        </span>
-                                    </div>
-                                    
-                                    <div className="space-y-2 text-sm text-gray-600 mb-4">
-                                        <p><span className="font-medium">Category:</span> {produce.category}</p>
-                                        <p><span className="font-medium">Quantity:</span> {produce.quantity} {produce.unit}</p>
-                                        <p><span className="font-medium">Price:</span> KES {produce.price_per_unit}/{produce.unit}</p>
-                                        <p><span className="font-medium">Location:</span> {produce.location}</p>
-                                        <p><span className="font-medium">Views:</span> {produce.views_count || 0}</p>
+                            {listings.map((item) => (
+                                <div
+                                    key={item.listing_id}
+                                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+                                >
+                                    {/* Product Image */}
+                                    <div className="h-40 bg-gray-200 overflow-hidden">
+                                        {item.image_url ? (
+                                            <img
+                                                src={`http://localhost:5000${item.image_url}`}
+                                                alt={item.produce_name}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
+                                                <svg className="w-16 h-16 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="flex gap-2">
-                                        <Link
-                                            to={`/produce/edit/${produce.listing_id}`}
-                                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded transition text-sm"
-                                        >
-                                            Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(produce.listing_id, produce.produce_name)}
-                                            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded transition text-sm"
-                                        >
-                                            Delete
-                                        </button>
+                                    {/* Product Details */}
+                                    <div className="p-4">
+                                        <div className="flex items-start justify-between mb-2">
+                                            <h3 className="text-lg font-bold text-gray-800">{item.produce_name}</h3>
+                                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                                                item.status === 'available' ? 'bg-green-100 text-green-800' :
+                                                item.status === 'sold' ? 'bg-blue-100 text-blue-800' :
+                                                'bg-red-100 text-red-800'
+                                            }`}>
+                                                {item.status}
+                                            </span>
+                                        </div>
+
+                                        <p className="text-gray-600 text-sm mb-2">
+                                            {item.quantity} {item.unit} • {item.location}
+                                        </p>
+                                        
+                                        {item.price_per_unit && (
+                                            <p className="text-green-600 font-bold mb-3">
+                                                KES {parseFloat(item.price_per_unit).toLocaleString()} per {item.unit}
+                                            </p>
+                                        )}
+
+                                        <div className="flex gap-2">
+                                            <Link
+                                                to={`/produce/edit/${item.listing_id}`}
+                                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-center text-sm font-medium transition"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(item.listing_id, item.produce_name)}
+                                                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded text-sm font-medium transition"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

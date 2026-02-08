@@ -19,7 +19,6 @@ const ManageProduce = () => {
     fetchProduce();
   }, [filters]);
 
-  // ✅ REPLACED FUNCTION
   const fetchProduce = async () => {
     try {
       const params = new URLSearchParams();
@@ -42,7 +41,7 @@ const ManageProduce = () => {
       setLoading(false);
     } catch (error) {
       console.error('Error fetching produce:', error);
-      setProduce([]); // Set empty array on error
+      setProduce([]);
       setLoading(false);
     }
   };
@@ -198,6 +197,7 @@ const ManageProduce = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produce</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Farmer</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
@@ -212,7 +212,7 @@ const ManageProduce = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {produce.length === 0 ? (
                   <tr>
-                    <td colSpan="10" className="px-6 py-12 text-center text-gray-500">
+                    <td colSpan="11" className="px-6 py-12 text-center text-gray-500">
                       No produce listings found
                     </td>
                   </tr>
@@ -221,6 +221,24 @@ const ManageProduce = () => {
                     <tr key={item.listing_id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {item.listing_id}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item.image_url ? (
+                          <img
+                            src={`http://localhost:5000${item.image_url}`}
+                            alt={item.produce_name}
+                            className="w-16 h-16 object-cover rounded"
+                            onError={(e) => {
+                              e.target.src = 'https://via.placeholder.com/100?text=No+Image';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
+                            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="font-medium text-gray-900">{item.produce_name}</div>
