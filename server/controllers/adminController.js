@@ -12,7 +12,8 @@ exports.getAdminStats = async (req, res) => {
         COUNT(*) as total_users,
         SUM(CASE WHEN user_type = 'farmer' THEN 1 ELSE 0 END) as total_farmers,
         SUM(CASE WHEN user_type = 'buyer' THEN 1 ELSE 0 END) as total_buyers,
-        SUM(CASE WHEN user_type = 'expert' THEN 1 ELSE 0 END) as total_experts
+        SUM(CASE WHEN user_type = 'expert' THEN 1 ELSE 0 END) as total_experts,
+        SUM(CASE WHEN user_type = 'admin' THEN 1 ELSE 0 END) as total_admins
       FROM users
     `);
 
@@ -46,6 +47,7 @@ exports.getAdminStats = async (req, res) => {
       totalFarmers: userStats[0].total_farmers,
       totalBuyers: userStats[0].total_buyers,
       totalExperts: userStats[0].total_experts,
+      totalAdmins: userStats[0].total_admins,
       totalProduce: produceStats[0].total_produce,
       totalRequests: requestStats[0].total_requests,
       totalAdvisoryPosts: advisoryStats[0].total_advisory_posts,
@@ -269,6 +271,78 @@ exports.deleteUser = async (req, res) => {
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Delete user error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Get chart data for analytics
+exports.getChartData = async (req, res) => {
+  try {
+    // User growth over last 12 months
+    const [userGrowth] = await pool.query(`
+      SELECT 
+        DATE_FORMAT(created_at, '%b %Y') as month,
+        DATE_FORMAT(created_at, '%Y-%m') as sort_month,
+        COUNT(*) as count
+      FROM users
+      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+      GROUP BY DATE_FORMAT(created_at, '%Y-%m'), DATE_FORMAT(created_at, '%b %Y')
+      ORDER BY sort_month ASC
+    `);
+
+    // User distribution
+    const [userDist] = await pool.query(`
+      SELECT 
+        SUM(CASE WHEN user_type = 'farmer' THEN 1 ELSE 0 END) as farmers,
+        SUM(CASE WHEN user_type = 'buyer' THEN 1 ELSE 0 END) as buyers,
+        SUM(CASE WHEN user_type = 'expert' THEN 1 ELSE 0 END) as experts
+      FROM users
+      WHERE user_type != 'admin'
+    `);
+
+    // Platform activity counts
+    const [produce] = await pool.query('SELECT COUNT(*) as count FROM produce_listings');
+    const [requests] = await pool.query('SELECT COUNT(*) as count FROM buyer_requests');
+    const [advisory] = await pool.query('SELECT COUNT(*) as count FROM advisory_posts');
+    const [forumPosts] = await pool.query('SELECT COUNT(*) as count FROM forum_posts');
+    const [comments] = await pool.query('SELECT COUNT(*) as count FROM forum_comments');
+
+    // Popular categories
+    const [categories] = await pool.query(`
+      SELECT 
+        category,
+        COUNT(*) as count
+      FROM produce_listings
+      WHERE category IS NOT NULL
+      GROUP BY category
+      ORDER BY count DESC
+      LIMIT 8
+    `);
+
+    res.json({
+      userGrowth: {
+        labels: userGrowth.map(item => item.month),
+        data: userGrowth.map(item => item.count)
+      },
+      userDistribution: {
+        farmers: userDist[0].farmers,
+        buyers: userDist[0].buyers,
+        experts: userDist[0].experts
+      },
+      activity: {
+        produce: produce[0].count,
+        requests: requests[0].count,
+        advisory: advisory[0].count,
+        forumPosts: forumPosts[0].count,
+        comments: comments[0].count
+      },
+      categories: {
+        labels: categories.map(item => item.category),
+        data: categories.map(item => item.count)
+      }
+    });
+  } catch (error) {
+    console.error('Get chart data error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

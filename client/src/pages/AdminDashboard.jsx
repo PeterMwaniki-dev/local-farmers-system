@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import AdminCharts from '../components/AdminCharts';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../services/api';
 
@@ -22,6 +23,7 @@ const AdminDashboard = () => {
   });
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
+  const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -42,6 +44,10 @@ const AdminDashboard = () => {
       // Fetch recent activity
       const activityResponse = await API.get('/admin/recent-activity');
       setRecentActivity(activityResponse.data);
+
+      // Fetch chart data
+      const chartResponse = await API.get('/admin/chart-data');
+      setChartData(chartResponse.data);
 
       setLoading(false);
     } catch (error) {
@@ -331,6 +337,9 @@ const AdminDashboard = () => {
                     </Link>
                   </div>
                 </div>
+
+                {/* Charts Section */}
+                {chartData && <AdminCharts chartData={chartData} />}
               </div>
             )}
 

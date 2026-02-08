@@ -9,7 +9,8 @@ const {
   getRecentActivity,
   getAllUsers,
   toggleUserStatus,
-  deleteUser
+  deleteUser,
+  getChartData
 } = require('../controllers/adminController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
@@ -22,5 +23,6 @@ router.get('/recent-activity', protect, getRecentActivity);
 router.get('/users', protect, getAllUsers);
 router.put('/users/:userId/toggle-status', protect, toggleUserStatus);
 router.delete('/users/:userId', protect, deleteUser);
+router.get('/chart-data', protect, getChartData);
 
 module.exports = router;
