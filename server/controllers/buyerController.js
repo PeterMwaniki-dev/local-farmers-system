@@ -294,7 +294,7 @@ const deleteBuyerRequest = async (req, res) => {
             });
         }
 
-        // Delete request (soft delete - marks as cancelled)
+        // Delete request (hard delete)
         await deleteRequest(id);
 
         res.status(200).json({

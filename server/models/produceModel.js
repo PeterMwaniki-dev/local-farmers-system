@@ -1,12 +1,11 @@
 // models/produceModel.js
-// Database queries for produce-related operations
+// Database queries for produce listings
 
 const { pool } = require('../config/db');
 
 /**
- * Create new produce listing
- * @param {object} produceData - Produce information
- * @returns {number} New listing ID
+ * @desc    Create new produce listing
+ * @returns {number} Listing ID
  */
 const createProduce = async (produceData) => {
     const {
@@ -27,33 +26,18 @@ const createProduce = async (produceData) => {
     const [result] = await pool.query(
         `INSERT INTO produce_listings 
         (farmer_id, produce_name, category, quantity, unit, price_per_unit, 
-         available_from, available_until, description, quality_grade, location, image_url) 
+         available_from, available_until, description, quality_grade, location, image_url)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-            farmer_id,
-            produce_name,
-            category,
-            quantity,
-            unit,
-            price_per_unit || null,
-            available_from || null,
-            available_until || null,
-            description || null,
-            quality_grade || null,
-            location,
-            image_url || null
-        ]
+        [farmer_id, produce_name, category, quantity, unit, price_per_unit,
+         available_from, available_until, description, quality_grade, location, image_url]
     );
 
     return result.insertId;
 };
 
 /**
- * Get all available produce (with filters)
- * @param {object} filters - Optional filters (category, search, location)
- * @param {number} limit - Results per page
- * @param {number} offset - Skip results
- * @returns {array} Array of produce listings
+ * @desc    Get all produce listings with filters
+ * @returns {Array} Produce listings
  */
 const getAllProduce = async (filters = {}, limit = 20, offset = 0) => {
     let query = `
@@ -63,7 +47,7 @@ const getAllProduce = async (filters = {}, limit = 20, offset = 0) => {
             u.phone_number as farmer_phone,
             u.location as farmer_location
         FROM produce_listings pl
-        INNER JOIN users u ON pl.farmer_id = u.user_id
+        JOIN users u ON pl.farmer_id = u.user_id
         WHERE pl.status = 'available'
     `;
 
@@ -76,9 +60,8 @@ const getAllProduce = async (filters = {}, limit = 20, offset = 0) => {
     }
 
     if (filters.search) {
-        query += ' AND (pl.produce_name LIKE ? OR pl.description LIKE ?)';
-        const searchTerm = `%${filters.search}%`;
-        params.push(searchTerm, searchTerm);
+        query += ' AND pl.produce_name LIKE ?';
+        params.push(`%${filters.search}%`);
     }
 
     if (filters.location) {
@@ -96,7 +79,7 @@ const getAllProduce = async (filters = {}, limit = 20, offset = 0) => {
         params.push(filters.max_price);
     }
 
-    // Order by most recent first
+    // Add ordering and pagination
     query += ' ORDER BY pl.created_at DESC LIMIT ? OFFSET ?';
     params.push(limit, offset);
 
@@ -105,23 +88,22 @@ const getAllProduce = async (filters = {}, limit = 20, offset = 0) => {
 };
 
 /**
- * Get total count of produce listings (for pagination)
- * @param {object} filters - Optional filters
+ * @desc    Get count of produce listings
  * @returns {number} Total count
  */
 const getProduceCount = async (filters = {}) => {
     let query = 'SELECT COUNT(*) as total FROM produce_listings WHERE status = "available"';
     const params = [];
 
+    // Apply same filters
     if (filters.category) {
         query += ' AND category = ?';
         params.push(filters.category);
     }
 
     if (filters.search) {
-        query += ' AND (produce_name LIKE ? OR description LIKE ?)';
-        const searchTerm = `%${filters.search}%`;
-        params.push(searchTerm, searchTerm);
+        query += ' AND produce_name LIKE ?';
+        params.push(`%${filters.search}%`);
     }
 
     if (filters.location) {
@@ -129,14 +111,23 @@ const getProduceCount = async (filters = {}) => {
         params.push(`%${filters.location}%`);
     }
 
+    if (filters.min_price) {
+        query += ' AND price_per_unit >= ?';
+        params.push(filters.min_price);
+    }
+
+    if (filters.max_price) {
+        query += ' AND price_per_unit <= ?';
+        params.push(filters.max_price);
+    }
+
     const [rows] = await pool.query(query, params);
     return rows[0].total;
 };
 
 /**
- * Get single produce by ID
- * @param {number} listingId 
- * @returns {object} Produce details with farmer info
+ * @desc    Get single produce by ID
+ * @returns {Object} Produce listing
  */
 const getProduceById = async (listingId) => {
     const [rows] = await pool.query(
@@ -145,29 +136,25 @@ const getProduceById = async (listingId) => {
             u.full_name as farmer_name,
             u.phone_number as farmer_phone,
             u.email as farmer_email,
-            u.location as farmer_location,
-            fp.farm_size,
-            fp.main_crops
+            u.location as farmer_location
         FROM produce_listings pl
-        INNER JOIN users u ON pl.farmer_id = u.user_id
-        LEFT JOIN farmer_profiles fp ON u.user_id = fp.user_id
+        JOIN users u ON pl.farmer_id = u.user_id
         WHERE pl.listing_id = ?`,
         [listingId]
     );
 
-    return rows.length > 0 ? rows[0] : null;
+    return rows[0];
 };
 
 /**
- * Get all produce listings by a specific farmer
- * @param {number} farmerId 
- * @returns {array} Array of farmer's produce listings
+ * @desc    Get produce by farmer
+ * @returns {Array} Produce listings
  */
 const getProduceByFarmer = async (farmerId) => {
     const [rows] = await pool.query(
         `SELECT * FROM produce_listings 
-         WHERE farmer_id = ? 
-         ORDER BY created_at DESC`,
+        WHERE farmer_id = ? 
+        ORDER BY created_at DESC`,
         [farmerId]
     );
 
@@ -175,9 +162,7 @@ const getProduceByFarmer = async (farmerId) => {
 };
 
 /**
- * Update produce listing
- * @param {number} listingId 
- * @param {object} updateData 
+ * @desc    Update produce listing
  * @returns {boolean} Success status
  */
 const updateProduce = async (listingId, updateData) => {
@@ -213,25 +198,10 @@ const updateProduce = async (listingId, updateData) => {
 };
 
 /**
- * Delete produce listing (soft delete - mark as expired)
- * @param {number} listingId 
+ * @desc    Delete produce listing (HARD DELETE)
  * @returns {boolean} Success status
  */
 const deleteProduce = async (listingId) => {
-    const [result] = await pool.query(
-        'UPDATE produce_listings SET status = "expired" WHERE listing_id = ?',
-        [listingId]
-    );
-
-    return result.affectedRows > 0;
-};
-
-/**
- * Hard delete produce listing (permanent removal)
- * @param {number} listingId 
- * @returns {boolean} Success status
- */
-const hardDeleteProduce = async (listingId) => {
     const [result] = await pool.query(
         'DELETE FROM produce_listings WHERE listing_id = ?',
         [listingId]
@@ -241,19 +211,21 @@ const hardDeleteProduce = async (listingId) => {
 };
 
 /**
- * Increment views count
- * @param {number} listingId 
+ * @desc    Increment views count
+ * @returns {boolean} Success status
  */
 const incrementViews = async (listingId) => {
-    await pool.query(
+    const [result] = await pool.query(
         'UPDATE produce_listings SET views_count = views_count + 1 WHERE listing_id = ?',
         [listingId]
     );
+
+    return result.affectedRows > 0;
 };
 
 /**
- * Get produce categories (for filters/dropdowns)
- * @returns {array} Array of unique categories
+ * @desc    Get all categories
+ * @returns {Array} Categories
  */
 const getCategories = async () => {
     const [rows] = await pool.query(
@@ -271,7 +243,6 @@ module.exports = {
     getProduceByFarmer,
     updateProduce,
     deleteProduce,
-    hardDeleteProduce,
     incrementViews,
     getCategories
 };

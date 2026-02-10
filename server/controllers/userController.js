@@ -187,7 +187,7 @@ exports.changePassword = async (req, res) => {
     }
 
     // Verify current password
-    const bcrypt = require('bcrypt');
+    const bcrypt = require('bcryptjs');
     const isValidPassword = await bcrypt.compare(current_password, users[0].password_hash);
 
     if (!isValidPassword) {

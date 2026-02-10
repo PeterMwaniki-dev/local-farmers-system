@@ -286,7 +286,7 @@ const updateProduceListing = async (req, res) => {
 };
 
 /**
- * @desc    Delete produce listing
+ * @desc    Delete produce listing (HARD DELETE)
  * @route   DELETE /api/produce/:id
  * @access  Private (Farmer only - own listing)
  */
@@ -312,7 +312,7 @@ const deleteProduceListing = async (req, res) => {
             });
         }
 
-        // Delete listing (soft delete - marks as expired)
+        // HARD DELETE - completely remove from database
         await deleteProduce(id);
 
         res.status(200).json({

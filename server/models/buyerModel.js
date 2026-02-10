@@ -217,7 +217,7 @@ const updateRequest = async (requestId, updateData) => {
  */
 const deleteRequest = async (requestId) => {
     const [result] = await pool.query(
-        'UPDATE buyer_requests SET status = "cancelled" WHERE request_id = ?',
+        'DELETE FROM buyer_requests WHERE request_id = ?',
         [requestId]
     );
 
