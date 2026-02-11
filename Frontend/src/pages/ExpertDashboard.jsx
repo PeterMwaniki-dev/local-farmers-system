@@ -129,7 +129,7 @@ const ExpertDashboard = () => {
           </Link>
 
           <Link
-            to="/advisory/questions"
+            to="/forum"
             className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-lg shadow-md hover:shadow-lg transition group"
           >
             <div className="flex items-center justify-between">

@@ -24,6 +24,8 @@ router.get('/:id', getProduceListing);
 router.post('/', protect, authorize('farmer'), upload.single('image'), createProduceListing);
 router.get('/farmer/my-listings', protect, authorize('farmer'), getMyListings);
 router.put('/:id', protect, authorize('farmer'), upload.single('image'), updateProduceListing);
-router.delete('/:id', protect, authorize('farmer'), deleteProduceListing);
+
+// Delete route - Allow both farmer and admin
+router.delete('/:id', protect, deleteProduceListing);
 
 module.exports = router;

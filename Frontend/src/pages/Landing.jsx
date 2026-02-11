@@ -370,13 +370,12 @@ const Landing = () => {
               </ul>
             </div>
 
-            {/* Account */}
+            {/* Account - DASHBOARD REMOVED */}
             <div>
               <h3 className="text-xl font-bold mb-4">Account</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><Link to="/login" className="hover:text-white transition">Login</Link></li>
                 <li><Link to="/register" className="hover:text-white transition">Register</Link></li>
-                <li><Link to="/dashboard" className="hover:text-white transition">Dashboard</Link></li>
               </ul>
             </div>
 

@@ -268,12 +268,6 @@ const ManageProduce = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex gap-2">
-                          <Link
-                            to={`/produce/${item.listing_id}`}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-medium"
-                          >
-                            View
-                          </Link>
                           <button
                             onClick={() => handleDeleteProduce(item.listing_id, item.produce_name, item.farmer_name)}
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium"

@@ -304,14 +304,17 @@ const deleteProduceListing = async (req, res) => {
             });
         }
 
-        // Check if user owns this listing
-        if (listing.farmer_id !== req.user.user_id) {
+        // Check if user owns this listing or is admin
+        const isAdmin = req.user.user_type === 'admin';
+        const isOwner = listing.farmer_id === req.user.user_id;
+
+        if (!isOwner && !isAdmin) {
             return res.status(403).json({
                 success: false,
                 message: 'You are not authorized to delete this listing'
             });
         }
-
+       
         // HARD DELETE - completely remove from database
         await deleteProduce(id);
 

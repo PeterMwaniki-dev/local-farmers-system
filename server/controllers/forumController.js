@@ -150,20 +150,29 @@ exports.updateForumPost = async (req, res) => {
   }
 };
 
-// Delete forum post
+// Delete forum post (allows both owner and admin)
 exports.deleteForumPost = async (req, res) => {
   try {
     const userId = req.user.user_id;
+    const userType = req.user.user_type;
     const { id } = req.params;
     
-    // Check if post exists and belongs to user
+    // Check if post exists
     const [posts] = await pool.query(
-      'SELECT * FROM forum_posts WHERE post_id = ? AND user_id = ?',
-      [id, userId]
+      'SELECT * FROM forum_posts WHERE post_id = ?',
+      [id]
     );
     
     if (posts.length === 0) {
-      return res.status(404).json({ message: 'Forum post not found or unauthorized' });
+      return res.status(404).json({ message: 'Forum post not found' });
+    }
+    
+    // Check if user owns this post OR is admin
+    const isAdmin = userType === 'admin';
+    const isOwner = posts[0].user_id === userId;
+    
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ message: 'You are not authorized to delete this post' });
     }
     
     // Delete associated comments first
@@ -238,20 +247,29 @@ exports.createComment = async (req, res) => {
   }
 };
 
-// Delete comment
+// Delete comment (allows both owner and admin)
 exports.deleteComment = async (req, res) => {
   try {
     const userId = req.user.user_id;
+    const userType = req.user.user_type;
     const { commentId } = req.params;
     
-    // Check if comment exists and belongs to user
+    // Check if comment exists
     const [comments] = await pool.query(
-      'SELECT * FROM forum_comments WHERE comment_id = ? AND user_id = ?',
-      [commentId, userId]
+      'SELECT * FROM forum_comments WHERE comment_id = ?',
+      [commentId]
     );
     
     if (comments.length === 0) {
-      return res.status(404).json({ message: 'Comment not found or unauthorized' });
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+    
+    // Check if user owns this comment OR is admin
+    const isAdmin = userType === 'admin';
+    const isOwner = comments[0].user_id === userId;
+    
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ message: 'You are not authorized to delete this comment' });
     }
     
     await pool.query('DELETE FROM forum_comments WHERE comment_id = ?', [commentId]);
