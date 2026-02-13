@@ -14,20 +14,21 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <div className="flex items-center gap-2">
-              <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-4.41 0-8-3.59-8-8V8.3l8-4.5 8 4.5V12c0 4.41-3.59 8-8 8z"/>
-                <path d="M12 6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
-              </svg>
-              <span className="text-2xl font-bold text-green-600">Farmers Hub</span>
-            </div>
+            <Link to="/" className="flex items-center gap-2">
+              <img 
+                src="/Images/canvas.png" 
+                alt="Shamba Sense Logo" 
+                className="w-10 h-10 object-contain"
+              />
+              <span className="text-2xl font-bold text-green-600">Shamba Sense</span>
+            </Link>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-6">
               <a href="#features" className="text-gray-700 hover:text-green-600 transition">Features</a>
               <a href="#how-it-works" className="text-gray-700 hover:text-green-600 transition">How It Works</a>
               <a href="#about" className="text-gray-700 hover:text-green-600 transition">About</a>
-              
+
               {isAuthenticated ? (
                 <Link
                   to="/dashboard"
@@ -56,18 +57,27 @@ const Landing = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              Empowering Kenyan Farmers with <span className="text-green-600">Information & Markets</span>
+      {/* Hero Section with Background Image */}
+      <section 
+        className="relative bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(/Images/hero-farmers.jpeg)',
+          minHeight: '600px'
+        }}
+      >
+        {/* Dark Overlay for text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        
+        {/* Content */}
+        <div className="relative container mx-auto px-4 py-20">
+          <div className="max-w-3xl">
+            <h1 className="text-5xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+              Empowering Kenyan Farmers with <span className="text-green-400">Information & Markets</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-100 mb-8 drop-shadow-md">
               Connect with buyers, access expert agricultural advice, and stay updated with market trends—all in one platform designed for smallholder farmers.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Link
                 to="/register"
@@ -77,7 +87,7 @@ const Landing = () => {
               </Link>
               <Link
                 to="/produce"
-                className="bg-white hover:bg-gray-50 text-green-600 border-2 border-green-600 px-8 py-4 rounded-lg text-lg font-semibold transition text-center"
+                className="bg-white hover:bg-gray-50 text-green-600 px-8 py-4 rounded-lg text-lg font-semibold transition text-center shadow-lg"
               >
                 Browse Produce
               </Link>
@@ -85,26 +95,19 @@ const Landing = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
-              <div>
+              <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
                 <p className="text-3xl font-bold text-green-600">1000+</p>
-                <p className="text-gray-600 text-sm">Farmers</p>
+                <p className="text-gray-700 text-sm font-medium">Farmers</p>
               </div>
-              <div>
+              <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
                 <p className="text-3xl font-bold text-green-600">500+</p>
-                <p className="text-gray-600 text-sm">Buyers</p>
+                <p className="text-gray-700 text-sm font-medium">Buyers</p>
               </div>
-              <div>
+              <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
                 <p className="text-3xl font-bold text-green-600">50+</p>
-                <p className="text-gray-600 text-sm">Experts</p>
+                <p className="text-gray-700 text-sm font-medium">Experts</p>
               </div>
             </div>
-          </div>
-
-          {/* Right Image/Illustration */}
-          <div className="bg-green-100 rounded-3xl p-8 flex items-center justify-center h-96">
-            <svg className="w-64 h-64 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
           </div>
         </div>
       </section>
@@ -331,6 +334,130 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">About Shamba Sense</h2>
+              <p className="text-xl text-gray-600">Transforming Kenyan Agriculture Through Technology</p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                Shamba Sense is dedicated to empowering Kenyan smallholder farmers by providing a digital platform 
+                that connects them directly with buyers, agricultural experts, and essential market information. 
+                We believe that by eliminating middlemen and providing access to real-time market data, we can help 
+                farmers earn fair prices for their produce and build sustainable farming businesses.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">What We Do</h3>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                Our platform bridges the gap between farmers, buyers, and agricultural experts by offering:
+              </p>
+              <ul className="space-y-3 text-gray-700 mb-6">
+                <li className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Direct Market Access:</strong> Farmers can list their produce and connect directly with buyers, ensuring fair prices and reducing dependency on middlemen.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Expert Agricultural Advice:</strong> Access to verified agricultural experts who share knowledge, answer questions, and provide guidance on best farming practices.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Market Intelligence:</strong> Real-time market trends, price information, and supply-demand data to help farmers make informed decisions.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span><strong>Community Support:</strong> A vibrant forum where farmers can share experiences, learn from each other, and build a supportive agricultural community.</span>
+                </li>
+              </ul>
+
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                We envision a future where every Kenyan farmer has access to the information, markets, and resources 
+                they need to thrive. By leveraging technology, we aim to create a more transparent, efficient, and 
+                equitable agricultural sector that benefits farmers, buyers, and consumers alike.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Shamba Sense?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-start gap-3">
+                  <div className="bg-green-100 p-2 rounded-full">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Fair Pricing</h4>
+                    <p className="text-sm text-gray-600">Direct connections eliminate middlemen, ensuring farmers get fair prices for their produce.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="bg-blue-100 p-2 rounded-full">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Trusted Platform</h4>
+                    <p className="text-sm text-gray-600">Verified users, secure transactions, and a supportive community you can trust.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="bg-purple-100 p-2 rounded-full">
+                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Knowledge Sharing</h4>
+                    <p className="text-sm text-gray-600">Learn from experts and fellow farmers to improve your farming practices and productivity.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="bg-yellow-100 p-2 rounded-full">
+                    <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Easy to Use</h4>
+                    <p className="text-sm text-gray-600">Simple, intuitive platform designed for farmers with varying levels of tech experience.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-green-600 text-white rounded-xl p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4">Join Our Growing Community</h3>
+              <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+                Be part of the agricultural revolution. Connect with thousands of farmers, buyers, and experts who are already transforming Kenya's farming sector.
+              </p>
+              <Link
+                to="/register"
+                className="inline-block bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition shadow-lg"
+              >
+                Get Started Today
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-green-600 to-green-700 py-20">
         <div className="container mx-auto px-4 text-center">
@@ -353,7 +480,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* About */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Farmers Hub</h3>
+              <h3 className="text-xl font-bold mb-4">Shamba Sense</h3>
               <p className="text-gray-400">
                 Empowering Kenyan smallholder farmers with digital tools for success.
               </p>
@@ -370,7 +497,7 @@ const Landing = () => {
               </ul>
             </div>
 
-            {/* Account - DASHBOARD REMOVED */}
+            {/* Account */}
             <div>
               <h3 className="text-xl font-bold mb-4">Account</h3>
               <ul className="space-y-2 text-gray-400">
@@ -383,7 +510,7 @@ const Landing = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-400">
-                <li>Email: info@farmershub.co.ke</li>
+                <li>Email: info@shambasense.co.ke</li>
                 <li>Phone: +254 700 000 000</li>
                 <li>Nairobi, Kenya</li>
               </ul>
@@ -391,7 +518,7 @@ const Landing = () => {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2026 Farmers Hub. All rights reserved. Built for Kenyan Farmers.</p>
+            <p>&copy; 2026 Shamba Sense. All rights reserved. Built for Kenyan Farmers.</p>
           </div>
         </div>
       </footer>

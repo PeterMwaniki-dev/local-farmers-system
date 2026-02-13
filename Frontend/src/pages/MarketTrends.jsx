@@ -78,7 +78,7 @@ const MarketTrends = () => {
     
     // Get dates (last 10 entries)
     const dates = [...new Set(trends.map(t => 
-      new Date(t.report_date).toLocaleDateString()
+      new Date(t.recorded_date).toLocaleDateString()
     ))].slice(-10);
 
     const datasets = produceNames.map((name, index) => {
@@ -95,7 +95,7 @@ const MarketTrends = () => {
         label: name,
         data: dates.map(date => {
           const entry = produceData.find(d => 
-            new Date(d.report_date).toLocaleDateString() === date
+            new Date(d.recorded_date).toLocaleDateString() === date
           );
           return entry ? entry.average_price : null;
         }),
@@ -325,7 +325,7 @@ const MarketTrends = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {new Date(trend.report_date).toLocaleDateString()}
+                        {new Date(trend.recorded_date).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                         {trend.notes || '-'}

@@ -30,6 +30,10 @@ import ManageUsers from './pages/ManageUsers';
 import ManageProduce from './pages/ManageProduce';
 import ManageForum from './pages/ManageForum';
 import AdminReports from './pages/AdminReports';
+import FarmerMyProduce from './pages/FarmerMyProduce';
+import BuyerRequests from './pages/BuyerRequests';
+import BuyerMyRequests from './pages/BuyerMyRequests';
+import ExpertMyAdvisory from './pages/ExpertMyAdvisory';
 
 // Home redirect component
 const HomeRedirect = () => {
@@ -54,6 +58,10 @@ function App() {
           <Route path="/forum" element={<Forum />} />
           <Route path="/forum/:id" element={<ViewForumPost />} />
           <Route path="/trends" element={<MarketTrends />} />
+          <Route path="/produce/my-listings" element={<ProtectedRoute><FarmerMyProduce /></ProtectedRoute>} />
+          <Route path="/buyer-requests" element={<BuyerRequests />} />
+          <Route path="/buyer-requests/my-requests" element={<ProtectedRoute allowedRoles={['buyer']}><BuyerMyRequests /></ProtectedRoute>} />
+          <Route path="/advisory/my-posts" element={<ProtectedRoute allowedRoles={['expert']}><ExpertMyAdvisory /></ProtectedRoute>} />
 
           {/* Protected Routes */}
           <Route

@@ -65,10 +65,12 @@ const Register = () => {
                 {/* Logo and Home Link */}
                 <div className="flex items-center justify-between mb-6">
                     <Link to="/" className="flex items-center gap-2 text-green-600 hover:text-green-700 transition">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        <span className="font-semibold">🌾 Farmers Hub</span>
+                        <img 
+                            src="/Images/canvas.png" 
+                            alt="Shamba Sense Logo" 
+                            className="w-6 h-6 object-contain"
+                        />
+                        <span className="font-semibold">Shamba Sense</span>
                     </Link>
                     <Link to="/" className="text-sm text-gray-600 hover:text-gray-800 transition">
                         ← Back to Home
@@ -77,7 +79,7 @@ const Register = () => {
 
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-                    <p className="text-gray-600 mt-2">Join the Farmers Hub</p>
+                    <p className="text-gray-600 mt-2">Join Shamba Sense</p>
                 </div>
 
                 {error && (

@@ -1,247 +1,197 @@
 // src/components/Navbar.jsx
-// Main navigation bar with role-based menu
+// Navigation bar component with role-based links
 
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useState } from 'react';
 
 const Navbar = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  // Role-specific navigation links
+  const getNavLinks = () => {
+    if (!user) return [];
+
+    switch (user.user_type) {
+      case 'farmer':
+        return [
+          { name: 'Dashboard', path: '/dashboard' },
+          { name: 'My Produce', path: '/produce/my-listings' },
+          { name: 'Buyer Requests', path: '/buyer-requests' },
+          { name: 'Advisory', path: '/advisory' },
+          { name: 'Forum', path: '/forum' }
+        ];
+
+      case 'buyer':
+        return [
+          { name: 'Dashboard', path: '/dashboard' },
+          { name: 'Browse Produce', path: '/produce' },
+          { name: 'My Requests', path: '/buyer-requests/my-requests' },
+          { name: 'Forum', path: '/forum' }
+        ];
+
+      case 'expert':
+        return [
+          { name: 'Dashboard', path: '/dashboard' },
+          { name: 'My Advisory', path: '/advisory/my-posts' },
+          { name: 'Forum', path: '/forum' },
+          { name: 'Browse Produce', path: '/produce' }
+        ];
+
+      case 'admin':
+        return [
+          { name: 'Dashboard', path: '/dashboard' },
+          { name: 'Users', path: '/admin/users' },
+          { name: 'Produce', path: '/admin/produce' },
+          { name: 'Forum', path: '/admin/forum' },
+          { name: 'Market Trends', path: '/trends' }
+        ];
+
+      default:
+        return [];
+    }
+  };
+
+  const navLinks = getNavLinks();
+
   return (
-    <nav className="bg-green-600 text-white shadow-lg">
+    <nav className="bg-gradient-to-r from-green-600 to-green-700 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
-          <Link to="/" className="flex items-center gap-2">
-            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-4.41 0-8-3.59-8-8V8.3l8-4.5 8 4.5V12c0 4.41-3.59 8-8 8z"/>
-              <path d="M12 6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
-            </svg>
-            <span className="text-xl font-bold">Farmers Hub</span>
+          <Link to="/dashboard" className="flex items-center gap-2">
+            <img 
+              src="/Images/canvas.png" 
+              alt="Shamba Sense Logo" 
+              className="w-10 h-10 object-contain"
+            />
+            <span className="text-xl font-bold text-white">Shamba Sense</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-6">
-            {/* Public Links */}
-            <Link to="/produce" className="hover:text-green-200 transition">
-              Browse Produce
-            </Link>
-            <Link to="/advisory" className="hover:text-green-200 transition">
-              Advisory
-            </Link>
-            <Link to="/forum" className="hover:text-green-200 transition">
-              Forum
-            </Link>
-            <Link to="/trends" className="hover:text-green-200 transition">
-              Market Trends
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="text-white hover:text-green-200 font-medium transition"
+              >
+                {link.name}
+              </Link>
+            ))}
 
-            {/* Authenticated Links */}
-            {isAuthenticated ? (
-              <>
-                <Link
-                  to="/dashboard"
-                  className="hover:text-green-200 transition font-medium"
-                >
-                  Dashboard
-                </Link>
+            {/* Profile Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-2 text-white hover:text-green-200 font-medium bg-green-700 px-4 py-2 rounded-lg transition"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span>{user?.full_name}</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-                {user?.user_type === 'farmer' && (
+              {/* Dropdown Menu */}
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
                   <Link
-                    to="/produce/create"
-                    className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium"
+                    to="/profile"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
-                    + List Produce
-                  </Link>
-                )}
-
-                {user?.user_type === 'buyer' && (
-                  <Link
-                    to="/requests/create"
-                    className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium"
-                  >
-                    + New Request
-                  </Link>
-                )}
-
-                {user?.user_type === 'expert' && (
-                  <Link
-                    to="/advisory/posts/create"
-                    className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium"
-                  >
-                    + New Post
-                  </Link>
-                )}
-
-                {/* User Menu - NOW WITH PROFILE LINK */}
-                <div className="flex items-center gap-3 border-l border-green-500 pl-6">
-                  <Link to="/profile" className="text-right hover:text-green-200 transition">
-                    <p className="font-semibold text-sm">{user?.full_name}</p>
-                    <p className="text-xs text-green-200 capitalize">
-                      {user?.user_type}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      My Profile
+                    </div>
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="bg-green-700 hover:bg-green-800 px-4 py-2 rounded-lg transition text-sm"
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
-                    Logout
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </div>
                   </button>
                 </div>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="hover:text-green-200 transition">
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium"
-                >
-                  Register
-                </Link>
-              </>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          <div className="md:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-white hover:text-green-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-green-500 pt-4">
-            <div className="flex flex-col gap-3">
-              {/* Public Links */}
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden pb-4">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-white hover:bg-green-700 px-4 py-2 rounded transition"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              {/* Divider */}
+              <div className="border-t border-green-500 my-2"></div>
+              
+              {/* Profile and Logout - Darker shade */}
               <Link
-                to="/produce"
-                className="hover:text-green-200 transition py-2"
-                onClick={() => setMobileMenuOpen(false)}
+                to="/profile"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-white bg-green-800 hover:bg-green-900 px-4 py-2 rounded transition flex items-center gap-2"
               >
-                Browse Produce
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                My Profile
               </Link>
-              <Link
-                to="/advisory"
-                className="hover:text-green-200 transition py-2"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  handleLogout();
+                }}
+                className="text-white bg-green-800 hover:bg-green-900 px-4 py-2 rounded transition text-left flex items-center gap-2"
               >
-                Advisory
-              </Link>
-              <Link
-                to="/forum"
-                className="hover:text-green-200 transition py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Forum
-              </Link>
-              <Link
-                to="/trends"
-                className="hover:text-green-200 transition py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Market Trends
-              </Link>
-
-              {/* Authenticated Links */}
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="hover:text-green-200 transition py-2 font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-
-                  {/* Mobile User Info - NOW WITH PROFILE LINK */}
-                  <Link
-                    to="/profile"
-                    className="bg-green-700 rounded-lg p-3 my-2 hover:bg-green-800 transition"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <p className="font-semibold">{user?.full_name}</p>
-                    <p className="text-xs text-green-200 capitalize">
-                      {user?.user_type}
-                    </p>
-                  </Link>
-
-                  {user?.user_type === 'farmer' && (
-                    <Link
-                      to="/produce/create"
-                      className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium text-center"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      + List Produce
-                    </Link>
-                  )}
-
-                  {user?.user_type === 'buyer' && (
-                    <Link
-                      to="/requests/create"
-                      className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium text-center"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      + New Request
-                    </Link>
-                  )}
-
-                  {user?.user_type === 'expert' && (
-                    <Link
-                      to="/advisory/posts/create"
-                      className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium text-center"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      + New Post
-                    </Link>
-                  )}
-
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="bg-green-700 hover:bg-green-800 px-4 py-2 rounded-lg transition text-sm mt-2"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="hover:text-green-200 transition py-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition font-medium text-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Register
-                  </Link>
-                </>
-              )}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+              </button>
             </div>
           </div>
         )}

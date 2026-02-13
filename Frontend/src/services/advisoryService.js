@@ -10,7 +10,7 @@ export const getAllPosts = async (filters = {}) => {
   try {
     const params = new URLSearchParams(filters).toString();
     const response = await API.get(`/advisory/posts?${params}`);
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -20,7 +20,7 @@ export const getAllPosts = async (filters = {}) => {
 export const getPostById = async (id) => {
   try {
     const response = await API.get(`/advisory/posts/${id}`);
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -30,7 +30,7 @@ export const getPostById = async (id) => {
 export const getMyPosts = async () => {
   try {
     const response = await API.get('/advisory/my-posts');
-    return response.data.data; // ✅ FIXED - Return the posts array
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -73,7 +73,7 @@ export const getAllQuestions = async (filters = {}) => {
   try {
     const params = new URLSearchParams(filters).toString();
     const response = await API.get(`/advisory/questions?${params}`);
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -83,7 +83,7 @@ export const getAllQuestions = async (filters = {}) => {
 export const getQuestionById = async (id) => {
   try {
     const response = await API.get(`/advisory/questions/${id}`);
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -93,7 +93,7 @@ export const getQuestionById = async (id) => {
 export const getMyQuestions = async () => {
   try {
     const response = await API.get('/advisory/my-questions');
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
@@ -135,7 +135,7 @@ export const deleteQuestion = async (id) => {
 export const getQuestionResponses = async (questionId) => {
   try {
     const response = await API.get(`/advisory/questions/${questionId}/responses`);
-    return response.data.data || response.data; // ✅ Handle both formats
+    return response.data.data || response.data;
   } catch (error) {
     throw error.response?.data || error;
   }

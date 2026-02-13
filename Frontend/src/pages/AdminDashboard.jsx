@@ -137,7 +137,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="mt-4">
-              <Link to="/admin/advisory" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+              <Link to="/advisory" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
                 Manage posts →
               </Link>
             </div>
