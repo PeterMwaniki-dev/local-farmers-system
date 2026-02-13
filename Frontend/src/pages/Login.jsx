@@ -105,17 +105,6 @@ const Login = () => {
                         </Link>
                     </p>
                 </div>
-
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                    <p className="text-sm text-gray-500 text-center">
-                        Test Accounts:
-                    </p>
-                    <div className="mt-2 text-xs text-gray-600 space-y-1">
-                        <p>Farmer: alice.muthoni@test.com / password123</p>
-                        <p>Expert: carol.wanjiru@test.com / password123</p>
-                        <p>Buyer: david.omondi@test.com / password123</p>
-                    </div>
-                </div>
             </div>
         </div>
     );

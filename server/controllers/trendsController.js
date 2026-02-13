@@ -6,14 +6,14 @@ const { pool } = require('../config/db');
 // Get all market trends (with optional filters)
 exports.getAllTrends = async (req, res) => {
   try {
-    const { produce, location, date } = req.query;
+    const { produce, produce_name, location, date } = req.query;
     
     let query = 'SELECT * FROM market_trends WHERE 1=1';
     const params = [];
     
-    if (produce) {
+    if (produce || produce_name) {
       query += ' AND produce_name LIKE ?';
-      params.push(`%${produce}%`);
+      params.push(`%${produce || produce_name}%`);
     }
     
     if (location) {
