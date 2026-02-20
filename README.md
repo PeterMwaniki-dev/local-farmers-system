@@ -1,4 +1,4 @@
-# 🌾 Shamba Sense
+#  Shamba Sense
 
 A comprehensive digital platform connecting Kenyan smallholder farmers with buyers, agricultural experts, and essential market information.
 
@@ -13,7 +13,7 @@ A comprehensive digital platform connecting Kenyan smallholder farmers with buye
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 
-## 🎯 About
+##  About
 
 Shamba Sense empowers Kenyan farmers by:
 - Connecting them directly with buyers (eliminating middlemen)
@@ -21,34 +21,34 @@ Shamba Sense empowers Kenyan farmers by:
 - Offering real-time market trends and pricing data
 - Building a supportive farming community through forums
 
-## ✨ Features
+##  Features
 
-### For Farmers 👨‍🌾
-- ✅ List produce for sale with images
-- ✅ View buyer requests and fulfill orders
-- ✅ Access expert agricultural advice
-- ✅ Track market prices and trends
-- ✅ Participate in community discussions
+### For Farmers 
+-  List produce for sale with images
+-  View buyer requests and fulfill orders
+-  Access expert agricultural advice
+-  Track market prices and trends
+-  Participate in community discussions
 
-### For Buyers 🛒
-- ✅ Browse fresh produce from local farmers
-- ✅ Post buying requests
-- ✅ Direct contact with farmers
-- ✅ Access to quality produce at fair prices
+### For Buyers 
+-  Browse fresh produce from local farmers
+-  Post buying requests
+-  Direct contact with farmers
+-  Access to quality produce at fair prices
 
-### For Experts 👨‍🏫
-- ✅ Publish advisory articles
-- ✅ Answer farmer questions in the forum
-- ✅ Share best farming practices
-- ✅ Build reputation in the community
+### For Experts 
+-  Publish advisory articles
+-  Answer farmer questions in the forum
+-  Share best farming practices
+-  Build reputation in the community
 
-### For Admins 👑
-- ✅ User management and analytics
-- ✅ Content moderation (forum, produce, requests)
-- ✅ Platform statistics and charts
-- ✅ Market trend data management
+### For Admins 
+-  User management and analytics
+-  Content moderation (forum, produce, requests)
+-  Platform statistics and charts
+-  Market trend data management
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **React** - UI framework
@@ -65,7 +65,7 @@ Shamba Sense empowers Kenyan farmers by:
 - **bcryptjs** - Password hashing
 - **Multer** - File uploads
 
-## 📸 Screenshots
+##  Screenshots
 
 ### Landing Page
 ![Landing Page](screenshots/landing.png)
@@ -126,7 +126,7 @@ Shamba Sense empowers Kenyan farmers by:
 ![Manage Users](screenshots/manage-users.png)
 *Admin user management interface*
 
-## 🚀 Installation
+##  Installation
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -188,7 +188,7 @@ npm run dev
 
 3. Open browser to `http://localhost:5173`
 
-## 👥 Usage
+##  Usage
 
 ### Test Accounts
 The system comes with pre-configured test accounts:
@@ -209,7 +209,7 @@ The system comes with pre-configured test accounts:
 - Email: admin@farmershub.com
 - Password: admin123
 
-## 📁 Project Structure
+##  Project Structure
 ```
 shamba-sense/
 ├── Frontend/                # React frontend
@@ -235,34 +235,34 @@ shamba-sense/
 └── README.md
 ```
 
-## 🎓 Key Features Implemented
+##  Key Features Implemented
 
-- ✅ Role-based authentication (Farmer, Buyer, Expert, Admin)
-- ✅ Image upload for produce listings
-- ✅ Real-time market trends with interactive charts
-- ✅ Community forum with comments
-- ✅ Expert advisory system
-- ✅ Buyer request marketplace
-- ✅ Admin analytics dashboard
-- ✅ Responsive design (mobile-friendly)
-- ✅ Secure JWT authentication
-- ✅ Password hashing with bcrypt
-- ✅ File upload with Multer
+-  Role-based authentication (Farmer, Buyer, Expert, Admin)
+-  Image upload for produce listings
+-  Real-time market trends with interactive charts
+-  Community forum with comments
+-  Expert advisory system
+-  Buyer request marketplace
+-  Admin analytics dashboard
+-  Responsive design (mobile-friendly)
+-  Secure JWT authentication
+-  Password hashing with bcrypt
+-  File upload with Multer
 
-## 🤝 Contributing
+##  Contributing
 
 This is a student project, but contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
+##  Author
 
 **Peter Mwaniki**
 - GitHub: [@PeterMwaniki-dev](https://github.com/PeterMwaniki-dev)
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Built to empower Kenyan smallholder farmers
 - Inspired by the need to connect farmers directly with markets
