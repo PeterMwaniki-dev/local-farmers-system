@@ -4,7 +4,7 @@ A comprehensive digital platform connecting Kenyan smallholder farmers with buye
 
 ![Landing Page](screenshots/landing.png)
 
-## 📋 Table of Contents
+##  Table of Contents
 - [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -270,4 +270,4 @@ This project is licensed under the MIT License.
 
 ---
 
-⭐ If you found this project helpful, please give it a star!
+ If you found this project helpful, please give it a star!
