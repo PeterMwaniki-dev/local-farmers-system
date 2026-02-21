@@ -63,7 +63,7 @@ const Navbar = () => {
   const navLinks = getNavLinks();
 
   return (
-    <nav className="bg-gradient-to-r from-green-600 to-green-700 shadow-lg sticky top-0 z-50">
+    <nav className="bg-[#169646] shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
@@ -71,7 +71,7 @@ const Navbar = () => {
             <img 
               src="/Images/canvas.png" 
               alt="Shamba Sense Logo" 
-              className="w-10 h-10 object-contain"
+              className="w-10 h-10 object-contain bg-[#169646] rounded-md p-1"
             />
             <span className="text-xl font-bold text-white">Shamba Sense</span>
           </Link>

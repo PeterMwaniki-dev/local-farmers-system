@@ -96,15 +96,15 @@ const Landing = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">1000+</p>
+                <p className="text-3xl font-bold text-green-600">100+</p>
                 <p className="text-gray-700 text-sm font-medium">Farmers</p>
               </div>
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">500+</p>
+                <p className="text-3xl font-bold text-green-600">50+</p>
                 <p className="text-gray-700 text-sm font-medium">Buyers</p>
               </div>
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">50+</p>
+                <p className="text-3xl font-bold text-green-600">20+</p>
                 <p className="text-gray-700 text-sm font-medium">Experts</p>
               </div>
             </div>

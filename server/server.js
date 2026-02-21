@@ -15,15 +15,16 @@ const app = express();
 // MIDDLEWARE
 // ============================================
 
+// CORS middleware (allow React frontend to communicate)
+// IMPORTANT: CORS must come BEFORE body parser
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
+}));
+
 // Body parser middleware (to read JSON from requests)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// CORS middleware (allow React frontend to communicate)
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
 
 // Serve uploaded files statically
 app.use('/uploads', express.static('uploads'));
@@ -61,6 +62,7 @@ app.use('/api/buyers', require('./routes/buyerRoutes'));
 app.use('/api/forum', require('./routes/forumRoutes'));
 app.use('/api/trends', require('./routes/trendsRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
 
 // ============================================
 // ERROR HANDLING
@@ -93,7 +95,7 @@ const startServer = async () => {
   try {
     // Test database connection first
     await testConnection();
-    
+
     // Start listening for requests
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);

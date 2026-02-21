@@ -11,12 +11,12 @@ const Dashboard = () => {
   const { user } = useAuth();
 
   // Route to admin dashboard (check by email for now)
-  if (user?.email === 'admin@farmershub.com') {
+  if (user?.email === 'admin@shambasense.com') {
     return <AdminDashboard />;
   }
 
   // Route to role-specific dashboard
-  if (user?.user_type === 'farmer') {
+  if (user?.user_type === 'admin') {
     return <FarmerDashboard />;
   }
 
