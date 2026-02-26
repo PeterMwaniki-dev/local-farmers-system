@@ -1,6 +1,3 @@
-// controllers/trendsController.js
-// Market trends controller
-
 const { pool } = require('../config/db');
 
 // Get all market trends (with optional filters)

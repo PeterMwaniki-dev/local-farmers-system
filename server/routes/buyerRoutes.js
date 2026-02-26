@@ -1,6 +1,3 @@
-// routes/buyerRoutes.js
-// Buyer request routes
-
 const express = require('express');
 const router = express.Router();
 const {

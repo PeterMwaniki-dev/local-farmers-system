@@ -1,6 +1,3 @@
-// routes/reportRoutes.js
-// Analytics and reporting routes
-
 const express = require('express');
 const router = express.Router();
 const {

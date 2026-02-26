@@ -1,6 +1,3 @@
-// routes/trendsRoutes.js
-// Market trends routes
-
 const express = require('express');
 const router = express.Router();
 const {

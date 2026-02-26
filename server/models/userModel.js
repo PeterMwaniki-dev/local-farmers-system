@@ -1,6 +1,3 @@
-// models/userModel.js
-// Database queries for user-related operations
-
 const { pool } = require('../config/db');
 
 /**

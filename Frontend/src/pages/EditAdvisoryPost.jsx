@@ -1,6 +1,3 @@
-// src/pages/EditAdvisoryPost.jsx
-// Form to edit existing advisory post
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';

@@ -1,6 +1,3 @@
-// controllers/advisoryController.js
-// Handle advisory system logic
-
 const {
     // Posts
     createPost,

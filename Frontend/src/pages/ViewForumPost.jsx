@@ -1,6 +1,3 @@
-// src/pages/ViewForumPost.jsx
-// View forum post with comments
-
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';

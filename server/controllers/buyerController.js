@@ -1,6 +1,3 @@
-// controllers/buyerController.js
-// Handle buyer request logic
-
 const {
     createRequest,
     getAllRequests,

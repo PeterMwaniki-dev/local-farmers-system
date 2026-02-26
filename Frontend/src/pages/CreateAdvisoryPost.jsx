@@ -1,6 +1,3 @@
-// src/pages/CreateAdvisoryPost.jsx
-// Form to create new advisory post
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';

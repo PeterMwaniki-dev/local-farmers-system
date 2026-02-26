@@ -1,4 +1,3 @@
-// utils/generateToken.js
 // Helper function to generate JWT tokens
 
 const jwt = require('jsonwebtoken');

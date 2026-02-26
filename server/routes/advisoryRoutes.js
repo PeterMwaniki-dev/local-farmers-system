@@ -1,6 +1,3 @@
-// routes/advisoryRoutes.js
-// Advisory system routes
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -27,9 +24,9 @@ const {
 } = require('../controllers/advisoryController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
-// =============================================
+// 
 // ADVISORY POSTS ROUTES
-// =============================================
+// 
 
 // Public routes
 router.get('/posts', getAdvisoryPosts);                    // Get all posts (with filters)
@@ -41,9 +38,9 @@ router.get('/my-posts', protect, authorize('expert'), getMyPosts);              
 router.put('/posts/:id', protect, authorize('expert'), updateAdvisoryPost);        // Update post
 router.delete('/posts/:id', protect, authorize('expert'), deleteAdvisoryPost);     // Delete post
 
-// =============================================
+// 
 // ADVISORY QUESTIONS ROUTES
-// =============================================
+// 
 
 // Public routes
 router.get('/questions', getAdvisoryQuestions);             // Get all questions (with filters)
@@ -55,9 +52,9 @@ router.get('/my-questions', protect, authorize('farmer'), getMyQuestions);      
 router.put('/questions/:id', protect, authorize('farmer'), updateAdvisoryQuestion);        // Update question
 router.delete('/questions/:id', protect, authorize('farmer'), deleteAdvisoryQuestion);     // Delete question
 
-// =============================================
+// 
 // ADVISORY RESPONSES ROUTES
-// =============================================
+// 
 
 // Protected routes (Experts only)
 router.post('/questions/:id/responses', protect, authorize('expert'), createAdvisoryResponse);     // Respond to question

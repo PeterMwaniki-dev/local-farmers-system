@@ -1,6 +1,3 @@
-// routes/produceRoutes.js
-// Produce management routes
-
 const express = require('express');
 const router = express.Router();
 const {

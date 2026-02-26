@@ -1,6 +1,3 @@
-// src/pages/Dashboard.jsx
-// Main dashboard that routes to role-specific dashboards
-
 import { useAuth } from '../contexts/AuthContext';
 import FarmerDashboard from './FarmerDashboard';
 import BuyerDashboard from './BuyerDashboard';
@@ -10,13 +7,15 @@ import AdminDashboard from './AdminDashboard';
 const Dashboard = () => {
   const { user } = useAuth();
 
-  // Route to admin dashboard (check by email for now)
-  if (user?.email === 'admin@shambasense.com') {
+  console.log('Dashboard - Current user:', user); // Debug log
+
+  // Route to admin dashboard
+  if (user?.email === 'admin@shambasense.com' || user?.user_type === 'admin') {
     return <AdminDashboard />;
   }
 
   // Route to role-specific dashboard
-  if (user?.user_type === 'admin') {
+  if (user?.user_type === 'farmer') {
     return <FarmerDashboard />;
   }
 
@@ -28,12 +27,17 @@ const Dashboard = () => {
     return <ExpertDashboard />;
   }
 
-  // Default fallback
+  // Debug fallback
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800">Welcome!</h2>
-        <p className="text-gray-600 mt-2">Your dashboard is loading...</p>
+        <h2 className="text-2xl font-bold text-gray-800">Debug Info</h2>
+        <p className="text-gray-600 mt-2">User Type: {user?.user_type || 'undefined'}</p>
+        <p className="text-gray-600">Email: {user?.email || 'undefined'}</p>
+        <p className="text-gray-600 mt-4">Full User Object:</p>
+        <pre className="text-xs bg-gray-100 p-2 rounded mt-2">
+          {JSON.stringify(user, null, 2)}
+        </pre>
       </div>
     </div>
   );

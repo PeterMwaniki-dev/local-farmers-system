@@ -1,6 +1,3 @@
-// src/pages/EditRequest.jsx
-// Form to edit existing buyer request
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';

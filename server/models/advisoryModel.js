@@ -1,11 +1,8 @@
-// models/advisoryModel.js
-// Database queries for advisory system operations
-
 const { pool } = require('../config/db');
 
-// =============================================
+// 
 // ADVISORY POSTS (Expert-generated content)
-// =============================================
+// 
 
 /**
  * Create new advisory post
@@ -203,9 +200,9 @@ const incrementPostViews = async (postId) => {
     );
 };
 
-// =============================================
+// 
 // ADVISORY QUESTIONS (Farmer questions)
-// =============================================
+// 
 
 /**
  * Create new question
@@ -429,9 +426,9 @@ const incrementQuestionViews = async (questionId) => {
     );
 };
 
-// =============================================
+// 
 // ADVISORY RESPONSES (Expert answers)
-// =============================================
+// 
 
 /**
  * Create response to a question

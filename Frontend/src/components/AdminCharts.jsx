@@ -1,6 +1,3 @@
-// src/components/AdminCharts.jsx
-// Charts and analytics for admin dashboard
-
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,

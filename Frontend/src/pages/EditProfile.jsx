@@ -1,6 +1,3 @@
-// src/pages/EditProfile.jsx
-// Edit user profile form
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';

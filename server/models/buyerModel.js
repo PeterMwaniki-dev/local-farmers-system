@@ -1,6 +1,3 @@
-// models/buyerModel.js
-// Database queries for buyer request operations
-
 const { pool } = require('../config/db');
 
 /**

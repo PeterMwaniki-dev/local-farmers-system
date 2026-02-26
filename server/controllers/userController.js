@@ -1,6 +1,3 @@
-// controllers/userController.js
-// User profile management controller
-
 const { pool } = require('../config/db');
 
 // Get current user's profile

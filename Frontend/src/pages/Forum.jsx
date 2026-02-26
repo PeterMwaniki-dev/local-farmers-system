@@ -1,6 +1,3 @@
-// src/pages/Forum.jsx
-// Main forum page - browse all discussions
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

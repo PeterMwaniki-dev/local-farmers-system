@@ -1,6 +1,3 @@
-// src/components/Logo.jsx
-// Reusable logo component
-
 import { Link } from 'react-router-dom';
 
 const Logo = ({ to = "/", className = "", textSize = "text-xl" }) => {

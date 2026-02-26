@@ -1,6 +1,3 @@
-// src/pages/EditProduce.jsx
-// Edit existing produce listing
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';

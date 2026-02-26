@@ -1,6 +1,3 @@
-// src/pages/ViewAdvisoryPost.jsx
-// View single advisory post with full details
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

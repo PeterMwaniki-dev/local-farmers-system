@@ -1,6 +1,3 @@
-// src/pages/AdminDashboard.jsx
-// Admin dashboard for system management
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

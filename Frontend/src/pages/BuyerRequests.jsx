@@ -1,6 +1,3 @@
-// src/pages/BuyerRequests.jsx
-// View all buyer requests (for farmers to see what buyers need)
-
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { getAllRequests } from '../services/buyerService';

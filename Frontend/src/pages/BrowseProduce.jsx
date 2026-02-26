@@ -1,6 +1,3 @@
-// src/pages/BrowseProduce.jsx
-// Public page to browse all available produce
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllProduce, getCategories } from '../services/produceService';

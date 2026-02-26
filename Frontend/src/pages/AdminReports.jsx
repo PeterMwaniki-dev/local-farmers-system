@@ -1,6 +1,3 @@
-// src/pages/AdminReports.jsx
-// Admin reports and analytics page
-
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import {

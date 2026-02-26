@@ -1,6 +1,3 @@
-// routes/forumRoutes.js
-// Forum routes
-
 const express = require('express');
 const router = express.Router();
 const {

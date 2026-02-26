@@ -1,4 +1,3 @@
-// src/App.jsx
 // Main App component with routing
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';

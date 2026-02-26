@@ -1,6 +1,3 @@
-// src/pages/ManageUsers.jsx
-// Admin page for managing users
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

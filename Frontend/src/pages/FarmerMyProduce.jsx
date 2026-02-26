@@ -1,6 +1,3 @@
-// src/pages/FarmerMyProduce.jsx
-// Farmer's own produce listings management page
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

@@ -1,6 +1,3 @@
-// src/contexts/AuthContext.jsx
-// Authentication context for managing user state
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import API from '../services/api';
 

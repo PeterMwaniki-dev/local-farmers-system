@@ -1,6 +1,3 @@
-// controllers/authController.js
-// Handle authentication logic (register, login)
-
 const bcrypt = require('bcryptjs');
 const { pool } = require('../config/db');
 const generateToken = require('../utils/generateToken');

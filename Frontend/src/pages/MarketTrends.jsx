@@ -1,6 +1,3 @@
-// src/pages/MarketTrends.jsx
-// Market trends and price information
-
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import API from '../services/api';

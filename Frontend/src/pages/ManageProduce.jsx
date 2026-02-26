@@ -1,6 +1,3 @@
-// src/pages/ManageProduce.jsx
-// Admin page for managing produce listings
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

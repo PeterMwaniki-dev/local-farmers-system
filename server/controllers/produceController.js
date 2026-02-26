@@ -1,6 +1,3 @@
-// controllers/produceController.js
-// Handle produce management logic
-
 const {
     createProduce,
     getAllProduce,

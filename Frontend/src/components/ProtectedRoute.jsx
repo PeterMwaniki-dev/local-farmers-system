@@ -1,6 +1,3 @@
-// src/components/ProtectedRoute.jsx
-// Protect routes that require authentication
-
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 

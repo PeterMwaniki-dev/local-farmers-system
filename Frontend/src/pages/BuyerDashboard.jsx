@@ -1,6 +1,3 @@
-// src/pages/BuyerDashboard.jsx
-// Buyer's main dashboard
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

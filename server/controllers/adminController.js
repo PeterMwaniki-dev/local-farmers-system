@@ -1,6 +1,3 @@
-// controllers/adminController.js
-// Admin dashboard and management controller
-
 const { pool } = require('../config/db');
 
 // Get admin statistics

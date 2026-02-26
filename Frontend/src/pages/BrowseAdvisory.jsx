@@ -1,6 +1,3 @@
-// src/pages/BrowseAdvisory.jsx
-// Public page to browse all advisory posts
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';

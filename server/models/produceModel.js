@@ -1,6 +1,3 @@
-// models/produceModel.js
-// Database queries for produce listings
-
 const { pool } = require('../config/db');
 
 /**

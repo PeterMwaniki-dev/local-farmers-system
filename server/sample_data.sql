@@ -3,9 +3,9 @@
 
 USE local_farmers_db;
 
--- =============================================
+-- 
 -- MARKET TRENDS DATA
--- =============================================
+-- 
 
 INSERT INTO market_trends (produce_name, location, average_price, demand_level, supply_level, recorded_date) VALUES
 ('Tomatoes', 'Nairobi', 80.00, 'high', 'medium', '2026-02-01'),
@@ -36,9 +36,9 @@ INSERT INTO market_trends (produce_name, location, average_price, demand_level, 
 ('Maize', 'Kitale', 48.00, 'high', 'low', '2026-02-05'),
 ('Onions', 'Nairobi', 95.00, 'high', 'low', '2026-02-05');
 
--- =============================================
+-- 
 -- SAMPLE FORUM POSTS
--- =============================================
+-- 
 
 -- Forum posts from different users
 INSERT INTO forum_posts (user_id, title, content, category) VALUES
@@ -48,9 +48,9 @@ INSERT INTO forum_posts (user_id, title, content, category) VALUES
 (9, 'Dealing with tomato blight - my experience', 'I recently dealt with tomato blight on my farm. Here are the steps I took to save my crop and prevent future outbreaks. Early detection is key!', 'Tips & Tricks'),
 (7, 'Best irrigation methods for small farms?', 'I have a 2-acre farm and want to install an irrigation system. What are the most cost-effective methods? Drip irrigation vs sprinklers?', 'Equipment & Tools');
 
--- =============================================
+-- 
 -- SAMPLE FORUM COMMENTS
--- =============================================
+-- 
 
 INSERT INTO forum_comments (post_id, user_id, comment_text) VALUES
 (1, 9, 'The best time is during the long rains (March-May) or short rains (October-November). Make sure soil is well prepared and has good drainage.'),
@@ -59,9 +59,9 @@ INSERT INTO forum_comments (post_id, user_id, comment_text) VALUES
 (3, 9, 'Inspiring story! Did you get any financing or use your own savings?'),
 (5, 9, 'Drip irrigation is more water-efficient and better for vegetables. Initial cost is higher but saves money long-term.');
 
--- =============================================
+-- 
 -- SAMPLE ADVISORY POSTS (Additional)
--- =============================================
+-- 
 
 -- Add more advisory posts for variety
 INSERT INTO advisory_posts (expert_id, title, content, category, tags) VALUES
@@ -81,11 +81,11 @@ INSERT INTO advisory_posts (expert_id, title, content, category, tags) VALUES
 'Proper post-harvest handling reduces losses:\n\n1. Harvest at Right Stage: Pick when firm and starting to turn color\n2. Gentle Handling: Avoid bruising\n3. Proper Packaging: Use ventilated crates\n4. Temperature Control: Store in cool, shaded area\n5. Quick Marketing: Sell within 3-5 days for best prices\n6. Grading: Sort by size and quality\n\nUp to 40% of tomatoes can be lost post-harvest. Proper handling protects your investment!',
 'Post-Harvest', 'tomatoes, post-harvest, storage');
 
--- =============================================
+-- 
 -- COMPLETE MESSAGE
--- =============================================
+-- 
 
-SELECT '✅ Sample data inserted successfully!' as Status;
+SELECT 'Sample data inserted successfully!' as Status;
 SELECT COUNT(*) as 'Market Trends Added' FROM market_trends;
 SELECT COUNT(*) as 'Forum Posts Added' FROM forum_posts;
 SELECT COUNT(*) as 'Forum Comments Added' FROM forum_comments;

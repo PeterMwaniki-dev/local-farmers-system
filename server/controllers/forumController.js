@@ -1,6 +1,3 @@
-// controllers/forumController.js
-// Forum posts and comments controller
-
 const { pool } = require('../config/db');
 
 // Get all forum posts (with optional filters)

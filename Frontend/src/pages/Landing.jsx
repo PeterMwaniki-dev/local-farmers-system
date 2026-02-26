@@ -1,6 +1,3 @@
-// src/pages/Landing.jsx
-// Landing page for visitors
-
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 

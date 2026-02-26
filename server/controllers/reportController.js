@@ -1,11 +1,6 @@
-// controllers/reportController.js
-// Analytics and reporting controller
-
 const { pool } = require('../config/db');
 
-// ============================================
 // USER STATISTICS
-// ============================================
 
 // Get user statistics
 exports.getUserStats = async (req, res) => {
@@ -71,9 +66,9 @@ exports.getUserStats = async (req, res) => {
   }
 };
 
-// ============================================
+// 
 // PRODUCE STATISTICS
-// ============================================
+// 
 
 // Get produce statistics
 exports.getProduceStats = async (req, res) => {
@@ -141,9 +136,9 @@ exports.getProduceStats = async (req, res) => {
   }
 };
 
-// ============================================
+// 
 // ACTIVITY STATISTICS
-// ============================================
+// 
 
 // Get platform activity statistics
 exports.getActivityStats = async (req, res) => {
@@ -212,9 +207,9 @@ exports.getActivityStats = async (req, res) => {
   }
 };
 
-// ============================================
+// 
 // TOP USERS
-// ============================================
+// 
 
 // Get top active users
 exports.getTopUsers = async (req, res) => {
@@ -281,9 +276,9 @@ exports.getTopUsers = async (req, res) => {
   }
 };
 
-// ============================================
+// 
 // GEOGRAPHIC DISTRIBUTION
-// ============================================
+// 
 
 // Get geographic distribution
 exports.getGeographicDistribution = async (req, res) => {
@@ -390,9 +385,9 @@ exports.getEngagementMetrics = async (req, res) => {
   }
 };
 
-// ============================================
+// 
 // OVERVIEW SUMMARY
-// ============================================
+// 
 
 // Get complete overview summary
 exports.getOverviewSummary = async (req, res) => {

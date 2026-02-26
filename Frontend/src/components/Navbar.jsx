@@ -1,6 +1,3 @@
-// src/components/Navbar.jsx
-// Navigation bar component with role-based links
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
