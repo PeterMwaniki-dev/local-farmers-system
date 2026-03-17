@@ -67,7 +67,7 @@ const Register = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-40"></div>
                 {/* Text on image */}
                 <div className="absolute inset-0 flex flex-col justify-center p-12 text-white">
-                    <h2 className="text-4xl font-bold mb-4">Welcome to Shamba Sense</h2>
+                    <h2 className="text-4xl font-bold mb-4">Welcome to Sonnet Shamba</h2>
                     <p className="text-lg text-gray-200">
                         Smart farming solutions to help you monitor, analyze, and optimize your agricultural operations.
                     </p>
@@ -88,10 +88,10 @@ const Register = () => {
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <img
                             src="/Images/canvas.png"
-                            alt="Shamba Sense Logo"
+                            alt="Sonnet Shamba Logo"
                             className="w-7 h-7 object-contain"
                         />
-                        <span className="text-xl font-bold text-green-600">Shamba Sense</span>
+                        <span className="text-xl font-bold text-green-600">Sonnet Shamba</span>
                     </div>
 
                     <div className="text-center mb-6">

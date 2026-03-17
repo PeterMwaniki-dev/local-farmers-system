@@ -1,5 +1,4 @@
-// server.js
-// Main server file for Local Farmers Information and Advisory System
+// Main server file 
 
 const express = require('express');
 const cors = require('cors');
@@ -11,9 +10,9 @@ const { testConnection } = require('./config/db');
 // Initialize Express app
 const app = express();
 
-// ============================================
+// 
 // MIDDLEWARE
-// ============================================
+// 
 
 // CORS middleware (allow React frontend to communicate)
 // IMPORTANT: CORS must come BEFORE body parser
@@ -35,14 +34,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// ============================================
+// 
 // ROUTES
-// ============================================
+// 
 
 // Test route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to Local Farmers Information and Advisory System API',
+    message: 'Welcome to Sonnet Shamba API',
     version: '1.0.0',
     status: 'Server is running'
   });
@@ -64,9 +63,9 @@ app.use('/api/trends', require('./routes/trendsRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/reports', require('./routes/reportRoutes'));
 
-// ============================================
+// 
 // ERROR HANDLING
-// ============================================
+// 
 
 // 404 handler (route not found)
 app.use((req, res) => {
@@ -85,9 +84,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ============================================
+// 
 // START SERVER
-// ============================================
+// 
 
 const PORT = process.env.PORT || 5000;
 

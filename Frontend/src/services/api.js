@@ -1,6 +1,3 @@
-// src/services/api.js
-// Axios configuration for API calls
-
 import axios from 'axios';
 
 // Create axios instance

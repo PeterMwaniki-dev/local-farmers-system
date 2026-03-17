@@ -14,10 +14,10 @@ const Landing = () => {
             <Link to="/" className="flex items-center gap-2">
               <img 
                 src="/Images/canvas.png" 
-                alt="Shamba Sense Logo" 
+                alt="Sonnet Shamba Logo" 
                 className="w-10 h-10 object-contain"
               />
-              <span className="text-2xl font-bold text-green-600">Shamba Sense</span>
+              <span className="text-2xl font-bold text-green-600">Sonnet Shamba</span>
             </Link>
 
             {/* Navigation Links */}
@@ -336,22 +336,22 @@ const Landing = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">About Shamba Sense</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">About Sonnet Shamba</h2>
               <p className="text-xl text-gray-600">Transforming Kenyan Agriculture Through Technology</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-gray-700 leading-relaxed mb-6">
-                Shamba Sense is dedicated to empowering Kenyan smallholder farmers by providing a digital platform 
-                that connects them directly with buyers, agricultural experts, and essential market information. 
+                Sonnet Shamba is dedicated to empowering Kenyan smallholder farmers by providing a digital platform 
+                that connects them directly with buyers, agricultural experts and essential market information. 
                 We believe that by eliminating middlemen and providing access to real-time market data, we can help 
                 farmers earn fair prices for their produce and build sustainable farming businesses.
               </p>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-4">What We Do</h3>
               <p className="text-gray-700 leading-relaxed mb-6">
-                Our platform bridges the gap between farmers, buyers, and agricultural experts by offering:
+                Our platform bridges the gap between farmers, buyers and agricultural experts by offering:
               </p>
               <ul className="space-y-3 text-gray-700 mb-6">
                 <li className="flex items-start gap-3">
@@ -364,30 +364,30 @@ const Landing = () => {
                   <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Expert Agricultural Advice:</strong> Access to verified agricultural experts who share knowledge, answer questions, and provide guidance on best farming practices.</span>
+                  <span><strong>Expert Agricultural Advice:</strong> Access to verified agricultural experts who share knowledge, answer questions and provide guidance on best farming practices.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Market Intelligence:</strong> Real-time market trends, price information, and supply-demand data to help farmers make informed decisions.</span>
+                  <span><strong>Market Intelligence:</strong> Real-time market trends, price information and supply-demand data to help farmers make informed decisions.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span><strong>Community Support:</strong> A vibrant forum where farmers can share experiences, learn from each other, and build a supportive agricultural community.</span>
+                  <span><strong>Community Support:</strong> A vibrant forum where farmers can share experiences, learn from each other and build a supportive agricultural community.</span>
                 </li>
               </ul>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
               <p className="text-gray-700 leading-relaxed mb-6">
-                We envision a future where every Kenyan farmer has access to the information, markets, and resources 
+                We envision a future where every Kenyan farmer has access to the information, markets and resources 
                 they need to thrive. By leveraging technology, we aim to create a more transparent, efficient, and 
                 equitable agricultural sector that benefits farmers, buyers, and consumers alike.
               </p>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Shamba Sense?</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Sonnet Shamba?</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-start gap-3">
                   <div className="bg-green-100 p-2 rounded-full">
@@ -477,7 +477,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* About */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Shamba Sense</h3>
+              <h3 className="text-xl font-bold mb-4">Sonnet Shamba</h3>
               <p className="text-gray-400">
                 Empowering Kenyan smallholder farmers with digital tools for success.
               </p>
@@ -507,7 +507,7 @@ const Landing = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-400">
-                <li>Email: info@shambasense.co.ke</li>
+                <li>Email: info@sonnetshamba.co.ke</li>
                 <li>Phone: +254 700 000 000</li>
                 <li>Nairobi, Kenya</li>
               </ul>
@@ -515,7 +515,7 @@ const Landing = () => {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2026 Shamba Sense. All rights reserved. Built for Kenyan Farmers.</p>
+            <p>&copy; 2026 Sonnet Shamba. All rights reserved. Built for Kenyan Farmers.</p>
           </div>
         </div>
       </footer>

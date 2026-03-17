@@ -10,7 +10,7 @@ const Dashboard = () => {
   console.log('Dashboard - Current user:', user); // Debug log
 
   // Route to admin dashboard
-  if (user?.email === 'admin@shambasense.com' || user?.user_type === 'admin') {
+  if (user?.email === 'admin@sonnetshamba.com' || user?.user_type === 'admin') {
     return <AdminDashboard />;
   }
 

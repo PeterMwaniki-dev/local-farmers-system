@@ -1,4 +1,7 @@
-#  Shamba Sense
+#  Sonnet Shamba
+
+
+> Repository: local-farmers-system
 
 A comprehensive digital platform connecting Kenyan smallholder farmers with buyers, agricultural experts, and essential market information.
 
@@ -15,7 +18,7 @@ A comprehensive digital platform connecting Kenyan smallholder farmers with buye
 
 ##  About
 
-Shamba Sense empowers Kenyan farmers by:
+Sonnet Shamba empowers Kenyan farmers by:
 - Connecting them directly with buyers (eliminating middlemen)
 - Providing access to agricultural experts
 - Offering real-time market trends and pricing data
@@ -69,14 +72,14 @@ Shamba Sense empowers Kenyan farmers by:
 
 ### Landing Page
 ![Landing Page](screenshots/landing.png)
-*Hero section with Shamba Sense branding and features overview*
+*Hero section with Sonnet Shamba branding and features overview*
 
 ### Authentication
 <p>
   <img src="screenshots/login.png" width="49%" alt="Login Page">
   <img src="screenshots/register.png" width="49%" alt="Register Page">
 </p>
-*Login and registration pages with Shamba Sense branding*
+*Login and registration pages with Sonnet Shamba branding*
 
 ### Farmer Dashboard
 ![Farmer Dashboard](screenshots/farmer-dashboard.png)
@@ -137,8 +140,8 @@ Shamba Sense empowers Kenyan farmers by:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/PereMwaniki-dev/shamba-sense.git
-cd shamba-sense
+git clone https://github.com/PeterMwaniki-dev/local-farmers-system.git
+cd local-farmers-system
 ```
 
 2. Install backend dependencies
@@ -211,7 +214,7 @@ The system comes with pre-configured test accounts:
 
 ##  Project Structure
 ```
-shamba-sense/
+sonnet-shamba/
 ├── Frontend/                # React frontend
 │   ├── public/             # Static assets
 │   │   └── Images/         # Logo and images

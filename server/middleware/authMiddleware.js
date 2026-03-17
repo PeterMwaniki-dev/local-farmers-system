@@ -1,6 +1,3 @@
-// middleware/authMiddleware.js
-// Middleware to protect routes and verify JWT tokens
-
 const jwt = require('jsonwebtoken');
 const { pool } = require('../config/db');
 

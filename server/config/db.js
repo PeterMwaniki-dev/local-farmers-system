@@ -1,6 +1,3 @@
-// config/db.js
-// Database connection configuration
-
 const mysql = require('mysql2');
 require('dotenv').config();
 

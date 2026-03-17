@@ -5,7 +5,7 @@ const Logo = ({ to = "/", className = "", textSize = "text-xl" }) => {
     <Link to={to} className={`flex items-center gap-2 ${className}`}>
       <img 
         src="/Images/canvas.png" 
-        alt="Shamba Sense Logo" 
+        alt="Sonnet Shamba Logo" 
         className="w-10 h-10 object-contain"
       />
       <span className={`${textSize} font-bold text-green-600`}>Shamba Sense</span>
