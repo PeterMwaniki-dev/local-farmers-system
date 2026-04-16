@@ -67,10 +67,10 @@ const Navbar = () => {
           <Link to="/dashboard" className="flex items-center gap-2">
             <img 
               src="/Images/canvas.png" 
-              alt="Shamba Sense Logo" 
+              alt="Sonnet Shamba Logo" 
               className="w-10 h-10 object-contain bg-[#169646] rounded-md p-1"
             />
-            <span className="text-xl font-bold text-white">Shamba Sense</span>
+            <span className="text-xl font-bold text-white">Sonnet Shamba</span>
           </Link>
 
           {/* Desktop Navigation Links */}

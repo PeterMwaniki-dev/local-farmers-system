@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import CreateProduce from './pages/CreateProduce';
 import EditProduce from './pages/EditProduce';
 import BrowseProduce from './pages/BrowseProduce';
+import ProduceDetails from './pages/ProduceDetails';
 import CreateRequest from './pages/CreateRequest';
 import EditRequest from './pages/EditRequest';
 import CreateAdvisoryPost from './pages/CreateAdvisoryPost';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/forum/:id" element={<ViewForumPost />} />
           <Route path="/trends" element={<MarketTrends />} />
           <Route path="/produce/my-listings" element={<ProtectedRoute><FarmerMyProduce /></ProtectedRoute>} />
+          <Route path="/produce/:id" element={<ProduceDetails />} />
           <Route path="/buyer-requests" element={<BuyerRequests />} />
           <Route path="/buyer-requests/my-requests" element={<ProtectedRoute allowedRoles={['buyer']}><BuyerMyRequests /></ProtectedRoute>} />
           <Route path="/advisory/my-posts" element={<ProtectedRoute allowedRoles={['expert']}><ExpertMyAdvisory /></ProtectedRoute>} />

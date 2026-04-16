@@ -259,3 +259,34 @@ exports.getUserStats = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+// Get public stats for landing page
+exports.getPublicStats = async (req, res) => {
+  try {
+    const [farmers] = await pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE user_type = "farmer"'
+    );
+    
+    const [buyers] = await pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE user_type = "buyer"'
+    );
+    
+    const [experts] = await pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE user_type = "expert"'
+    );
+
+    res.json({
+      success: true,
+      data: {
+        farmers: farmers[0].count,
+        buyers: buyers[0].count,
+        experts: experts[0].count
+      }
+    });
+  } catch (error) {
+    console.error('Get public stats error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get stats'
+    });
+  }
+};

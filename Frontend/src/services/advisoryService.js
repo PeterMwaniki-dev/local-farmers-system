@@ -3,7 +3,6 @@
 
 import API from './api';
 
-// ============ ADVISORY POSTS ============
 
 // Get all advisory posts (public)
 export const getAllPosts = async (filters = {}) => {

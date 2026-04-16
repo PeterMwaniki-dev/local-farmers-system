@@ -197,7 +197,7 @@ const BrowseProduce = () => {
                     </div>
                 </div>
 
-                {/* ✅ REPLACED PRODUCE GRID */}
+                {/* REPLACED PRODUCE GRID */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                     {loading ? (
                         <div className="text-center py-12">
@@ -290,9 +290,13 @@ const BrowseProduce = () => {
                                                     </span>
                                                 </div>
 
-                                                <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition">
+                                                <Link
+                                                    to={`/produce/${item.listing_id}`}
+                                                     className="block w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition text-center"
+                                                >
                                                     View Details
-                                                </button>
+                                                </Link>
+
                                             </div>
                                         </div>
                                     ))

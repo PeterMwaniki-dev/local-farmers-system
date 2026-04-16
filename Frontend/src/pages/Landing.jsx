@@ -1,8 +1,31 @@
+// src/pages/Landing.jsx
+
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import API from '../services/api';
 
 const Landing = () => {
   const { isAuthenticated } = useAuth();
+  const [stats, setStats] = useState({
+    farmers: 0,
+    buyers: 0,
+    experts: 0
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await API.get('/users/public/stats');
+      setStats(response.data.data);
+    } catch (error) {
+      console.error('Failed to load stats:', error);
+      // Keep default values if fetch fails
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
@@ -93,15 +116,15 @@ const Landing = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">100+</p>
+                <p className="text-3xl font-bold text-green-600">{stats.farmers}+</p>
                 <p className="text-gray-700 text-sm font-medium">Farmers</p>
               </div>
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">50+</p>
+                <p className="text-3xl font-bold text-green-600">{stats.buyers}+</p>
                 <p className="text-gray-700 text-sm font-medium">Buyers</p>
               </div>
               <div className="bg-white bg-opacity-90 p-4 rounded-lg backdrop-blur-sm">
-                <p className="text-3xl font-bold text-green-600">20+</p>
+                <p className="text-3xl font-bold text-green-600">{stats.experts}+</p>
                 <p className="text-gray-700 text-sm font-medium">Experts</p>
               </div>
             </div>
