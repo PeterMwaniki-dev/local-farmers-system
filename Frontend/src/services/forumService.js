@@ -26,6 +26,16 @@ export const getForumPostById = async (id) => {
   }
 };
 
+// Record a view for a forum post (dedicated endpoint)
+export const recordForumPostView = async (id) => {
+  try {
+    const response = await API.post(`/forum/posts/${id}/view`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 // Get user's own forum posts
 export const getMyForumPosts = async () => {
   try {

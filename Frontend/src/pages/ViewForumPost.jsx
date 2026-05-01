@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { getForumPostById, getPostComments, createComment, deleteComment, deleteForumPost } from '../services/forumService';
+import { getForumPostById, recordForumPostView, getPostComments, createComment, deleteComment, deleteForumPost } from '../services/forumService';
 import { useAuth } from '../contexts/AuthContext';
 
 const ViewForumPost = () => {
@@ -14,13 +14,29 @@ const ViewForumPost = () => {
   const [error, setError] = useState('');
   const [commentText, setCommentText] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const hasRecordedViewRef = useRef(false);
 
   useEffect(() => {
+    hasRecordedViewRef.current = false;
     fetchPostAndComments();
   }, [id]);
 
   const fetchPostAndComments = async () => {
     try {
+      // Prevent double-counting in React 18 StrictMode dev remounts.
+      const viewKey = `viewed:forum:${id}`;
+      const now = Date.now();
+      const lastViewedAt = Number(sessionStorage.getItem(viewKey) || '0');
+      const shouldRecord = !lastViewedAt || now - lastViewedAt > 3000;
+
+      if (!hasRecordedViewRef.current) {
+        hasRecordedViewRef.current = true;
+        if (shouldRecord) {
+          sessionStorage.setItem(viewKey, String(now));
+          recordForumPostView(id).catch(() => {});
+        }
+      }
+
       const postData = await getForumPostById(id);
       setPost(postData);
 

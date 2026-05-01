@@ -4,6 +4,7 @@ const {
     createProduceListing,
     getProduceListings,
     getProduceListing,
+    incrementProduceViews,
     getMyListings,
     updateProduceListing,
     deleteProduceListing,
@@ -16,6 +17,7 @@ const upload = require('../middleware/uploadMiddleware');
 router.get('/', getProduceListings);
 router.get('/categories', getProduceCategories);
 router.get('/:id', getProduceListing);
+router.post('/:id/view', incrementProduceViews);
 
 // Protected routes (Farmers only)
 router.post('/', protect, authorize('farmer'), upload.single('image'), createProduceListing);

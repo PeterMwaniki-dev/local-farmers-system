@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getAllForumPosts,
   getForumPostById,
+  incrementForumPostViews,
   getMyForumPosts,
   createForumPost,
   updateForumPost,
@@ -16,6 +17,7 @@ const { protect } = require('../middleware/authMiddleware');
 // Public routes
 router.get('/posts', getAllForumPosts);
 router.get('/posts/:id', getForumPostById);
+router.post('/posts/:id/view', incrementForumPostViews);
 router.get('/posts/:postId/comments', getPostComments);
 
 // Protected routes

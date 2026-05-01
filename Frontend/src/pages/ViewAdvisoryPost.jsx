@@ -1,17 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { getPostById } from '../services/advisoryService';
+import { getPostById, recordAdvisoryPostView } from '../services/advisoryService';
 
 const ViewAdvisoryPost = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const hasRecordedViewRef = useRef(false);
 
   useEffect(() => {
+    hasRecordedViewRef.current = false;
     const fetchPost = async () => {
       try {
+        // Prevent double-counting in React 18 StrictMode dev remounts.
+        // We only suppress duplicate view events in a short time window.
+        const viewKey = `viewed:advisory:${id}`;
+        const now = Date.now();
+        const lastViewedAt = Number(sessionStorage.getItem(viewKey) || '0');
+        const shouldRecord = !lastViewedAt || now - lastViewedAt > 3000;
+
+        if (!hasRecordedViewRef.current) {
+          hasRecordedViewRef.current = true;
+          if (shouldRecord) {
+            sessionStorage.setItem(viewKey, String(now));
+            recordAdvisoryPostView(id).catch(() => {});
+          }
+        }
+
         const data = await getPostById(id);
         setPost(data);
         setLoading(false);

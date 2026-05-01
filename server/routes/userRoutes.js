@@ -12,13 +12,14 @@ const { protect } = require('../middleware/authMiddleware');
 
 // Public routes (no authentication)
 router.get('/public/stats', getPublicStats);
-router.get('/:id', getUserById);
 
 // Protected routes (require authentication)
-router.use(protect);
-router.get('/profile', getMyProfile);
-router.put('/profile', updateProfile);
-router.put('/change-password', changePassword);
-router.get('/stats', getUserStats);
+router.get('/profile', protect, getMyProfile);
+router.put('/profile', protect, updateProfile);
+router.put('/change-password', protect, changePassword);
+router.get('/stats', protect, getUserStats);
+
+// Public user lookup by ID (keep this last so it doesn't catch /profile)
+router.get('/:id', getUserById);
 
 module.exports = router;

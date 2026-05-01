@@ -164,9 +164,6 @@ const getProduceListing = async (req, res) => {
             });
         }
 
-        // Increment view count
-        await incrementViews(id);
-
         res.status(200).json({
             success: true,
             data: produce
@@ -177,6 +174,39 @@ const getProduceListing = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Server error while fetching produce listing'
+        });
+    }
+};
+
+/**
+ * @desc    Increment views for produce listing (dedicated endpoint)
+ * @route   POST /api/produce/:id/view
+ * @access  Public
+ */
+const incrementProduceViews = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Ensure listing exists (keeps response consistent)
+        const produce = await getProduceById(id);
+        if (!produce) {
+            return res.status(404).json({
+                success: false,
+                message: 'Produce listing not found'
+            });
+        }
+
+        await incrementViews(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'View recorded'
+        });
+    } catch (error) {
+        console.error('Increment produce views error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error while recording view'
         });
     }
 };
@@ -356,6 +386,7 @@ module.exports = {
     createProduceListing,
     getProduceListings,
     getProduceListing,
+    incrementProduceViews,
     getMyListings,
     updateProduceListing,
     deleteProduceListing,

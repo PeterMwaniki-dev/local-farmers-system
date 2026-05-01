@@ -131,8 +131,6 @@ const getAdvisoryPost = async (req, res) => {
             });
         }
 
-        await incrementPostViews(id);
-
         res.status(200).json({
             success: true,
             data: post
@@ -143,6 +141,38 @@ const getAdvisoryPost = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Server error while fetching advisory post'
+        });
+    }
+};
+
+/**
+ * @desc    Increment views for advisory post (dedicated endpoint)
+ * @route   POST /api/advisory/posts/:id/view
+ * @access  Public
+ */
+const incrementAdvisoryPostViews = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const post = await getPostById(id);
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: 'Advisory post not found'
+            });
+        }
+
+        await incrementPostViews(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'View recorded'
+        });
+    } catch (error) {
+        console.error('Increment advisory post views error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error while recording view'
         });
     }
 };
@@ -665,6 +695,7 @@ module.exports = {
     createAdvisoryPost,
     getAdvisoryPosts,
     getAdvisoryPost,
+    incrementAdvisoryPostViews,
     getMyPosts,
     updateAdvisoryPost,
     deleteAdvisoryPost,

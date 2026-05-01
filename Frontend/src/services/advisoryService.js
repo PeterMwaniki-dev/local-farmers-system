@@ -25,6 +25,16 @@ export const getPostById = async (id) => {
   }
 };
 
+// Record a view for an advisory post (dedicated endpoint)
+export const recordAdvisoryPostView = async (id) => {
+  try {
+    const response = await API.post(`/advisory/posts/${id}/view`);
+    return response.data.data || response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 // Get expert's own posts
 export const getMyPosts = async () => {
   try {

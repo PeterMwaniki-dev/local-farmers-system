@@ -24,6 +24,16 @@ export const getProduceById = async (id) => {
   }
 };
 
+// Record a view for a produce listing (dedicated endpoint)
+export const recordProduceView = async (id) => {
+  try {
+    const response = await API.post(`/produce/${id}/view`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 // Get farmer's own listings
 export const getMyListings = async () => {
   try {

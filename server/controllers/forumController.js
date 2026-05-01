@@ -57,16 +57,31 @@ exports.getForumPostById = async (req, res) => {
     if (posts.length === 0) {
       return res.status(404).json({ message: 'Forum post not found' });
     }
-    
-    // Increment views
-    await pool.query(
-      'UPDATE forum_posts SET views_count = views_count + 1 WHERE post_id = ?',
-      [id]
-    );
-    
+
     res.json(posts[0]);
   } catch (error) {
     console.error('Get forum post error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Increment views for a forum post (dedicated endpoint)
+exports.incrementForumPostViews = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await pool.query(
+      'UPDATE forum_posts SET views_count = views_count + 1 WHERE post_id = ?',
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Forum post not found' });
+    }
+
+    res.json({ message: 'View recorded' });
+  } catch (error) {
+    console.error('Increment forum post views error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

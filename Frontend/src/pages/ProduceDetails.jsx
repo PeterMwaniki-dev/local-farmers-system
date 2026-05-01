@@ -1,9 +1,9 @@
 // src/pages/ProduceDetails.jsx
 // Single produce item details page
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getProduceById } from '../services/produceService';
+import { getProduceById, recordProduceView } from '../services/produceService';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -14,14 +14,29 @@ const ProduceDetails = () => {
     const [produce, setProduce] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const hasRecordedViewRef = useRef(false);
 
     useEffect(() => {
+        hasRecordedViewRef.current = false;
         fetchProduceDetails();
     }, [id]);
 
     const fetchProduceDetails = async () => {
         try {
             setLoading(true);
+            // Prevent double-counting in React 18 StrictMode dev remounts.
+            const viewKey = `viewed:produce:${id}`;
+            const now = Date.now();
+            const lastViewedAt = Number(sessionStorage.getItem(viewKey) || '0');
+            const shouldRecord = !lastViewedAt || now - lastViewedAt > 3000;
+
+            if (!hasRecordedViewRef.current) {
+                hasRecordedViewRef.current = true;
+                if (shouldRecord) {
+                    sessionStorage.setItem(viewKey, String(now));
+                    recordProduceView(id).catch(() => {});
+                }
+            }
             const response = await getProduceById(id);
             setProduce(response.data);
         } catch (err) {
