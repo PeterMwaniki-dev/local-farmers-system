@@ -62,6 +62,7 @@ app.use('/api/forum', require('./routes/forumRoutes'));
 app.use('/api/trends', require('./routes/trendsRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/reports', require('./routes/reportRoutes'));
+app.use('/api/messages', require('./routes/messageRoutes'));
 
 // 
 // ERROR HANDLING

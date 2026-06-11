@@ -2,14 +2,41 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllProduce, getCategories } from '../services/produceService';
 import Navbar from '../components/Navbar';
+import MessageDialog from '../components/MessageDialog';
 import { useAuth } from '../contexts/AuthContext';
 
 const BrowseProduce = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const [produce, setProduce] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [messageDialog, setMessageDialog] = useState({
+        open: false,
+        farmerId: null,
+        farmerName: '',
+        produceName: ''
+    });
+
+    const canMessageFarmer = (item) => {
+        if (!isAuthenticated || !user) return false;
+        if (!['buyer', 'expert'].includes(user.user_type)) return false;
+        if (item.farmer_id === user.user_id) return false;
+        return true;
+    };
+
+    const openMessageDialog = (item) => {
+        setMessageDialog({
+            open: true,
+            farmerId: item.farmer_id,
+            farmerName: item.farmer_name,
+            produceName: item.produce_name
+        });
+    };
+
+    const closeMessageDialog = () => {
+        setMessageDialog({ open: false, farmerId: null, farmerName: '', produceName: '' });
+    };
     
     // Filter states
     const [filters, setFilters] = useState({
@@ -290,12 +317,30 @@ const BrowseProduce = () => {
                                                     </span>
                                                 </div>
 
-                                                <Link
-                                                    to={`/produce/${item.listing_id}`}
-                                                     className="block w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition text-center"
-                                                >
-                                                    View Details
-                                                </Link>
+                                                <div className="flex flex-col gap-2">
+                                                    <Link
+                                                        to={`/produce/${item.listing_id}`}
+                                                        className="block w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition text-center"
+                                                    >
+                                                        View Details
+                                                    </Link>
+
+                                                    {canMessageFarmer(item) ? (
+                                                        <button
+                                                            onClick={() => openMessageDialog(item)}
+                                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition"
+                                                        >
+                                                            Message Farmer
+                                                        </button>
+                                                    ) : !isAuthenticated ? (
+                                                        <Link
+                                                            to="/login"
+                                                            className="block w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg font-medium transition text-center text-sm"
+                                                        >
+                                                            Login to Message Farmer
+                                                        </Link>
+                                                    ) : null}
+                                                </div>
 
                                             </div>
                                         </div>
@@ -306,6 +351,14 @@ const BrowseProduce = () => {
                     )}
                 </div>
             </div>
+
+            <MessageDialog
+                isOpen={messageDialog.open}
+                onClose={closeMessageDialog}
+                receiverId={messageDialog.farmerId}
+                receiverName={messageDialog.farmerName}
+                produceName={messageDialog.produceName}
+            />
         </div>
     );
 };

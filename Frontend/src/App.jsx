@@ -34,6 +34,7 @@ import FarmerMyProduce from './pages/FarmerMyProduce';
 import BuyerRequests from './pages/BuyerRequests';
 import BuyerMyRequests from './pages/BuyerMyRequests';
 import ExpertMyAdvisory from './pages/ExpertMyAdvisory';
+import Messages from './pages/Messages';
 
 // Home redirect component
 const HomeRedirect = () => {
@@ -63,6 +64,14 @@ function App() {
           <Route path="/buyer-requests" element={<BuyerRequests />} />
           <Route path="/buyer-requests/my-requests" element={<ProtectedRoute allowedRoles={['buyer']}><BuyerMyRequests /></ProtectedRoute>} />
           <Route path="/advisory/my-posts" element={<ProtectedRoute allowedRoles={['expert']}><ExpertMyAdvisory /></ProtectedRoute>} />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute allowedRoles={['farmer', 'buyer', 'expert']}>
+                <Messages />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Protected Routes */}
           <Route

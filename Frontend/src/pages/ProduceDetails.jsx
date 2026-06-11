@@ -5,16 +5,24 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProduceById, recordProduceView } from '../services/produceService';
 import Navbar from '../components/Navbar';
+import MessageDialog from '../components/MessageDialog';
 import { useAuth } from '../contexts/AuthContext';
 
 const ProduceDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const [produce, setProduce] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [messageDialogOpen, setMessageDialogOpen] = useState(false);
     const hasRecordedViewRef = useRef(false);
+
+    const canMessageFarmer = produce &&
+        isAuthenticated &&
+        user &&
+        ['buyer', 'expert'].includes(user.user_type) &&
+        produce.farmer_id !== user.user_id;
 
     useEffect(() => {
         hasRecordedViewRef.current = false;
@@ -207,28 +215,59 @@ const ProduceDetails = () => {
                             </div>
 
                             {isAuthenticated ? (
-                                <div className="flex gap-4">
-                                    <a
-                                        href={`tel:${produce.farmer_phone}`}
-                                        className="flex-1 bg-green-600 text-white py-3 rounded-lg text-center"
-                                    >
-                                        📞 Call Farmer
-                                    </a>
+                                <div className="space-y-3">
+                                    <div className="flex gap-4">
+                                        <a
+                                            href={`tel:${produce.farmer_phone}`}
+                                            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-center transition"
+                                        >
+                                            Call Farmer
+                                        </a>
 
-                                    <a
-                                        href={`mailto:${produce.farmer_email}`}
-                                        className="flex-1 bg-blue-600 text-white py-3 rounded-lg text-center"
-                                    >
-                                        ✉️ Email Farmer
-                                    </a>
+                                        <a
+                                            href={`mailto:${produce.farmer_email}`}
+                                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-center transition"
+                                        >
+                                            Email Farmer
+                                        </a>
+                                    </div>
+
+                                    {canMessageFarmer && (
+                                        <button
+                                            onClick={() => setMessageDialogOpen(true)}
+                                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-medium transition"
+                                        >
+                                            Message Farmer
+                                        </button>
+                                    )}
                                 </div>
                             ) : (
-                                <Link to="/register">Register to Contact Farmer</Link>
+                                <div className="space-y-2">
+                                    <Link
+                                        to="/login"
+                                        className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg text-center font-medium transition"
+                                    >
+                                        Login to Message Farmer
+                                    </Link>
+                                    <Link to="/register" className="block text-center text-green-600 hover:text-green-700">
+                                        Or register to contact farmer
+                                    </Link>
+                                </div>
                             )}
                         </div>
                     </div>
                 </div>
             </div>
+
+            {produce && (
+                <MessageDialog
+                    isOpen={messageDialogOpen}
+                    onClose={() => setMessageDialogOpen(false)}
+                    receiverId={produce.farmer_id}
+                    receiverName={produce.farmer_name}
+                    produceName={produce.produce_name}
+                />
+            )}
         </div>
     );
 };

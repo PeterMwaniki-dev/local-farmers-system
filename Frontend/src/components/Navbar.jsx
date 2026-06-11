@@ -1,12 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { getUnreadCount } from '../services/messageService';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const canUseMessaging = user && ['farmer', 'buyer', 'expert'].includes(user.user_type);
+
+  const fetchUnreadCount = useCallback(async () => {
+    if (!canUseMessaging) {
+      setUnreadCount(0);
+      return;
+    }
+    try {
+      const response = await getUnreadCount();
+      setUnreadCount(response.data?.count || 0);
+    } catch {
+      // Silently ignore — user may have logged out
+    }
+  }, [canUseMessaging]);
+
+  useEffect(() => {
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 30000);
+    const handleUpdate = () => fetchUnreadCount();
+    window.addEventListener('messages-updated', handleUpdate);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('messages-updated', handleUpdate);
+    };
+  }, [fetchUnreadCount]);
 
   const handleLogout = () => {
     logout();
@@ -22,6 +50,7 @@ const Navbar = () => {
         return [
           { name: 'Dashboard', path: '/dashboard' },
           { name: 'My Produce', path: '/produce/my-listings' },
+          { name: 'Messages', path: '/messages', showBadge: true },
           { name: 'Buyer Requests', path: '/buyer-requests' },
           { name: 'Advisory', path: '/advisory' },
           { name: 'Forum', path: '/forum' }
@@ -31,6 +60,7 @@ const Navbar = () => {
         return [
           { name: 'Dashboard', path: '/dashboard' },
           { name: 'Browse Produce', path: '/produce' },
+          { name: 'Messages', path: '/messages', showBadge: true },
           { name: 'My Requests', path: '/buyer-requests/my-requests' },
           { name: 'Forum', path: '/forum' }
         ];
@@ -39,6 +69,7 @@ const Navbar = () => {
         return [
           { name: 'Dashboard', path: '/dashboard' },
           { name: 'My Advisory', path: '/advisory/my-posts' },
+          { name: 'Messages', path: '/messages', showBadge: true },
           { name: 'Forum', path: '/forum' },
           { name: 'Browse Produce', path: '/produce' }
         ];
@@ -79,9 +110,14 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-white hover:text-green-200 font-medium transition"
+                className="text-white hover:text-green-200 font-medium transition relative"
               >
                 {link.name}
+                {link.showBadge && unreadCount > 0 && (
+                  <span className="absolute -top-2 -right-4 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
               </Link>
             ))}
 
@@ -157,9 +193,14 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-white hover:bg-green-700 px-4 py-2 rounded transition"
+                  className="text-white hover:bg-green-700 px-4 py-2 rounded transition flex items-center justify-between"
                 >
-                  {link.name}
+                  <span>{link.name}</span>
+                  {link.showBadge && unreadCount > 0 && (
+                    <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
                 </Link>
               ))}
               

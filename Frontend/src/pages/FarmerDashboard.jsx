@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { getMyListings, deleteProduce } from '../services/produceService';
+import { getUnreadCount } from '../services/messageService';
 import { useAuth } from '../contexts/AuthContext';
 
 const FarmerDashboard = () => {
@@ -9,10 +10,21 @@ const FarmerDashboard = () => {
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [unreadMessages, setUnreadMessages] = useState(0);
 
     useEffect(() => {
         fetchMyListings();
+        fetchUnreadMessages();
     }, []);
+
+    const fetchUnreadMessages = async () => {
+        try {
+            const response = await getUnreadCount();
+            setUnreadMessages(response.data?.count || 0);
+        } catch {
+            setUnreadMessages(0);
+        }
+    };
 
     const fetchMyListings = async () => {
         try {
@@ -54,6 +66,18 @@ const FarmerDashboard = () => {
                         Manage your produce listings and connect with buyers.
                     </p>
                 </div>
+
+                {unreadMessages > 0 && (
+                    <Link
+                        to="/messages"
+                        className="block bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-8 hover:bg-indigo-100 transition"
+                    >
+                        <p className="text-indigo-800 font-semibold">
+                            You have {unreadMessages} unread message{unreadMessages !== 1 ? 's' : ''} from buyers
+                        </p>
+                        <p className="text-indigo-600 text-sm mt-1">Click here to view and reply</p>
+                    </Link>
+                )}
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

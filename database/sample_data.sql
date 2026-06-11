@@ -5,10 +5,10 @@ USE local_farmers_db;
 -- Sample Users (password is 'password123' hashed with bcrypt)
 -- You'll replace these hashes when you implement proper authentication
 INSERT INTO users (full_name, email, phone_number, password_hash, user_type, location) VALUES
-('John Kamau', 'john.kamau@example.com', '0712345678', '$2b$10$placeholder', 'farmer', 'Kiambu'),
-('Dr. Mary Wanjiku', 'mary.wanjiku@example.com', '0723456789', '$2b$10$placeholder', 'expert', 'Nairobi'),
-('David Ochieng', 'david.ochieng@example.com', '0734567890', '$2b$10$placeholder', 'buyer', 'Mombasa'),
-('Peter Mwangi', 'peter.mwangi@example.com', '0745678901', '$2b$10$placeholder', 'farmer', 'Nakuru');
+('John Kamau', 'john.kamau@example.com', '0712345678', '$2b$10$CHF0Tr6nQTTNoJwrDKOrO.VvcwX5yw4pAmGGzeAi59LiaPWLNnEbC', 'farmer', 'Kiambu'),
+('Dr. Mary Wanjiku', 'mary.wanjiku@example.com', '0723456789', '$2b$10$CHF0Tr6nQTTNoJwrDKOrO.VvcwX5yw4pAmGGzeAi59LiaPWLNnEbC', 'expert', 'Nairobi'),
+('David Ochieng', 'david.ochieng@example.com', '0734567890', '$2b$10$CHF0Tr6nQTTNoJwrDKOrO.VvcwX5yw4pAmGGzeAi59LiaPWLNnEbC', 'buyer', 'Mombasa'),
+('Peter Mwangi', 'peter.mwangi@example.com', '0745678901', '$2b$10$CHF0Tr6nQTTNoJwrDKOrO.VvcwX5yw4pAmGGzeAi59LiaPWLNnEbC', 'farmer', 'Nakuru');
 
 -- Sample Farmer Profiles
 INSERT INTO farmer_profiles (user_id, farm_size, farm_location, main_crops, farming_experience) VALUES
