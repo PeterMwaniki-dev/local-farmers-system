@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { geocodeLocation, fetchWeatherForecast } from '../services/weatherService';
 import { getMyRequests, deleteRequest } from '../services/buyerService';
 import { getUnreadCount } from '../services/messageService';
 import { useAuth } from '../contexts/AuthContext';
@@ -13,11 +14,36 @@ const BuyerDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [unreadMessages, setUnreadMessages] = useState(0);
+    const [weatherAlert, setWeatherAlert] = useState(null);
 
     useEffect(() => {
         fetchMyRequests();
         fetchUnreadMessages();
+        checkWeatherAlerts();
     }, []);
+
+    const checkWeatherAlerts = async () => {
+        try {
+            const location = user?.location || 'Nairobi';
+            const geoResponse = await geocodeLocation(location + ', Kenya');
+            if (!geoResponse.data.results || geoResponse.data.results.length === 0) return;
+            
+            const { latitude, longitude } = geoResponse.data.results[0];
+            const weatherResponse = await fetchWeatherForecast(latitude, longitude);
+            const weather = weatherResponse.data;
+            
+            const alerts = [];
+            if (weather.current.weather_code >= 65) alerts.push('Heavy rain expected');
+            if (weather.current.wind_speed_10m > 50) alerts.push('Strong winds warning');
+            if (weather.daily.precipitation_probability_max?.[0] > 80) alerts.push('High chance of rain');
+            
+            if (alerts.length > 0) {
+                setWeatherAlert(alerts.join(', '));
+            }
+        } catch (err) {
+            // Ignore weather errors
+        }
+    };
 
     const fetchUnreadMessages = async () => {
         try {
@@ -78,9 +104,21 @@ const BuyerDashboard = () => {
                     <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                         Manage your produce requests and connect with farmers.
                     </p>
-                </div>
+        </div>
 
-                {unreadMessages > 0 && (
+        {/* Weather Alert Banner */}
+        {weatherAlert && (
+            <div className={`mb-6 p-4 rounded-lg border ${darkMode ? 'bg-yellow-900/30 border-yellow-700' : 'bg-yellow-50 border-yellow-200'}`}>
+                <p className={`flex items-center gap-2 font-semibold ${darkMode ? 'text-yellow-300' : 'text-yellow-800'}`}>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Weather Alert: {weatherAlert} — potential supply/transit delays in your area
+                </p>
+            </div>
+        )}
+
+        {unreadMessages > 0 && (
                     <Link
                         to="/messages"
                         className="block bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-8 hover:bg-indigo-100 transition dark:bg-gray-800 dark:border-gray-700"

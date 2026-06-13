@@ -37,6 +37,7 @@ import BuyerMyRequests from './pages/BuyerMyRequests';
 import ExpertMyAdvisory from './pages/ExpertMyAdvisory';
 import Messages from './pages/Messages';
 import Settings from './pages/Settings';
+import WeatherPage from './pages/WeatherPage';
 
 // Home redirect component
 const HomeRedirect = () => {
@@ -87,6 +88,14 @@ function App() {
             />
 
             {/* Settings Route */}
+            <Route
+              path="/weather"
+              element={
+                <ProtectedRoute allowedRoles={['farmer', 'expert']}>
+                  <WeatherPage />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/settings"
               element={

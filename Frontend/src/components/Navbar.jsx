@@ -51,6 +51,7 @@ const Navbar = () => {
       case 'farmer':
         return [
           { name: 'Dashboard', path: '/dashboard' },
+          { name: 'Weather', path: '/weather' },
           { name: 'My Produce', path: '/produce/my-listings' },
           { name: 'Messages', path: '/messages', showBadge: true },
           { name: 'Buyer Requests', path: '/buyer-requests' },
@@ -70,6 +71,7 @@ const Navbar = () => {
       case 'expert':
         return [
           { name: 'Dashboard', path: '/dashboard' },
+          { name: 'Weather', path: '/weather' },
           { name: 'My Advisory', path: '/advisory/my-posts' },
           { name: 'Messages', path: '/messages', showBadge: true },
           { name: 'Forum', path: '/forum' },

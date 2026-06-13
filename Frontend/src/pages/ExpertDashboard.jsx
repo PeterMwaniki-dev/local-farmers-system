@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import WeatherWidget from '../components/WeatherWidget';
 import { useAuth } from '../contexts/AuthContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { getMyPosts, deletePost } from '../services/advisoryService';
@@ -60,6 +61,11 @@ const ExpertDashboard = () => {
           <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Share your agricultural expertise and help farmers succeed.
           </p>
+        </div>
+
+        {/* Weather Widget */}
+        <div className="mb-8">
+          <WeatherWidget location={user?.location} />
         </div>
 
         {/* Stats Cards */}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import WeatherWidget from '../components/WeatherWidget';
 import { getMyListings, deleteProduce } from '../services/produceService';
 import { getUnreadCount } from '../services/messageService';
 import { useAuth } from '../contexts/AuthContext';
@@ -78,6 +79,11 @@ const FarmerDashboard = () => {
                         <p className={`text-sm mt-1 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>Click here to view and reply</p>
                     </Link>
                 )}
+
+                {/* Weather Widget */}
+                <div className="mb-8">
+                    <WeatherWidget location={user?.location} />
+                </div>
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
