@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import API from '../services/api';
 
 const ManageUsers = () => {
+  const { darkMode } = useSettings();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -82,34 +84,20 @@ const ManageUsers = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Loading users...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Manage Users</h1>
-            <p className="text-gray-600 mt-1">View and manage all system users</p>
+            <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>Manage Users</h1>
+            <p className={`mt-1 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>View and manage all system users</p>
           </div>
           <Link
             to="/dashboard"
-            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition"
+            className={`px-6 py-2 rounded-lg transition ${
+              darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-600 hover:bg-gray-700 text-white'
+            }`}
           >
             ← Back to Dashboard
           </Link>
@@ -117,24 +105,24 @@ const ManageUsers = () => {
 
         {/* Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Total Users</p>
-            <p className="text-3xl font-bold text-gray-800">{pagination.total}</p>
+          <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Users</p>
+            <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{pagination.total}</p>
           </div>
-          <div className="bg-green-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Farmers</p>
+          <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-green-50'}`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Farmers</p>
             <p className="text-3xl font-bold text-green-600">
               {users.filter(u => u.user_type === 'farmer').length}
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Buyers</p>
+          <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-blue-50'}`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Buyers</p>
             <p className="text-3xl font-bold text-blue-600">
               {users.filter(u => u.user_type === 'buyer').length}
             </p>
           </div>
-          <div className="bg-purple-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Experts</p>
+          <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-purple-50'}`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Experts</p>
             <p className="text-3xl font-bold text-purple-600">
               {users.filter(u => u.user_type === 'expert').length}
             </p>
@@ -142,11 +130,11 @@ const ManageUsers = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className={`rounded-lg shadow-md p-6 mb-8 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 Search
               </label>
               <input
@@ -154,19 +142,23 @@ const ManageUsers = () => {
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 placeholder="Search by name or email..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                }`}
               />
             </div>
 
             {/* User Type Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 User Type
               </label>
               <select
                 value={filters.user_type}
                 onChange={(e) => setFilters({ ...filters, user_type: e.target.value, page: 1 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                }`}
               >
                 <option value="">All Types</option>
                 <option value="farmer">Farmers</option>
@@ -188,122 +180,135 @@ const ManageUsers = () => {
         </div>
 
         {/* Users Table */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {users.length === 0 ? (
-                  <tr>
-                    <td colSpan="9" className="px-6 py-12 text-center text-gray-500">
-                      No users found
-                    </td>
-                  </tr>
-                ) : (
-                  users.map((user) => (
-                    <tr key={user.user_id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {user.user_id}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-medium text-gray-900">{user.full_name}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {user.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {user.phone_number}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
-                          user.user_type === 'farmer' ? 'bg-green-100 text-green-800' :
-                          user.user_type === 'buyer' ? 'bg-blue-100 text-blue-800' :
-                          'bg-purple-100 text-purple-800'
-                        }`}>
-                          {user.user_type}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {user.location}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                          user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {user.is_active ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {new Date(user.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleToggleStatus(user.user_id, user.is_active)}
-                            className={`px-3 py-1 rounded text-white text-xs font-medium ${
-                              user.is_active 
-                                ? 'bg-yellow-600 hover:bg-yellow-700' 
-                                : 'bg-green-600 hover:bg-green-700'
-                            }`}
-                          >
-                            {user.is_active ? 'Deactivate' : 'Activate'}
-                          </button>
-                          <button
-                            onClick={() => handleDeleteUser(user.user_id, user.full_name)}
-                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          {pagination.totalPages > 1 && (
-            <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-600">
-                  Showing page {pagination.currentPage} of {pagination.totalPages} ({pagination.total} total users)
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-                    disabled={filters.page === 1}
-                    className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
-                    disabled={filters.page >= pagination.totalPages}
-                    className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
+        <div className={`rounded-lg shadow-md overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+              <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading users...</p>
             </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className={`border-b ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <tr>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>ID</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Name</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Email</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Phone</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Type</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Location</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Status</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Joined</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className={`${darkMode ? 'divide-gray-700' : 'divide-y divide-gray-200'}`}>
+                    {users.length === 0 ? (
+                      <tr>
+                        <td colSpan="9" className={`px-6 py-12 text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          No users found
+                        </td>
+                      </tr>
+                    ) : (
+                      users.map((user) => (
+                        <tr key={user.user_id} className={`hover:${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                          <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                            {user.user_id}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>{user.full_name}</div>
+                          </td>
+                          <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                            {user.email}
+                          </td>
+                          <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                            {user.phone_number}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
+                              user.user_type === 'farmer' ? 'bg-green-100 text-green-800' :
+                              user.user_type === 'buyer' ? 'bg-blue-100 text-blue-800' :
+                              'bg-purple-100 text-purple-800'
+                            }`}>
+                              {user.user_type}
+                            </span>
+                          </td>
+                          <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                            {user.location}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                              user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}>
+                              {user.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                          </td>
+                          <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                            {new Date(user.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleToggleStatus(user.user_id, user.is_active)}
+                                className={`px-3 py-1 rounded text-white text-xs font-medium ${
+                                  user.is_active
+                                    ? 'bg-yellow-600 hover:bg-yellow-700'
+                                    : 'bg-green-600 hover:bg-green-700'
+                                }`}
+                              >
+                                {user.is_active ? 'Deactivate' : 'Activate'}
+                              </button>
+                              <button
+                                onClick={() => handleDeleteUser(user.user_id, user.full_name)}
+                                className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              {pagination.totalPages > 1 && (
+                <div className={`px-6 py-4 border-t ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                  <div className="flex items-center justify-between">
+                    <div className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      Showing page {pagination.currentPage} of {pagination.totalPages} ({pagination.total} total users)
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
+                        disabled={filters.page === 1}
+                        className={`px-4 py-2 border rounded-lg text-sm font-medium ${
+                          darkMode ? 'bg-gray-600 border-gray-500 text-gray-300 hover:bg-gray-500' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
+                        disabled={filters.page >= pagination.totalPages}
+                        className={`px-4 py-2 border rounded-lg text-sm font-medium ${
+                          darkMode ? 'bg-gray-600 border-gray-500 text-gray-300 hover:bg-gray-500' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

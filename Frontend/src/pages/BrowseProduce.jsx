@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllProduce, getCategories } from '../services/produceService';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
 import MessageDialog from '../components/MessageDialog';
 import { useAuth } from '../contexts/AuthContext';
+import { useSettings } from '../contexts/SettingsContext';
 
 const BrowseProduce = () => {
     const { isAuthenticated, user } = useAuth();
+    const { darkMode } = useSettings();
     const [produce, setProduce] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -95,49 +97,24 @@ const BrowseProduce = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            {isAuthenticated ? (
-                <Navbar />
-            ) : (
-                <nav className="bg-green-600 text-white shadow-lg">
-                    <div className="container mx-auto px-4">
-                        <div className="flex justify-between items-center py-4">
-                            <Link to="/" className="text-2xl font-bold hover:text-green-100">
-                                🌾 Local Farmers
-                            </Link>
-                            <div className="space-x-4">
-                                <Link to="/login" className="hover:text-green-100 transition">
-                                    Login
-                                </Link>
-                                <Link
-                                    to="/register"
-                                    className="bg-green-700 hover:bg-green-800 px-4 py-2 rounded transition"
-                                >
-                                    Register
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            )}
-
+        <Layout>
             <div className="container mx-auto px-4 py-8">
                 {/* Header */}
-                <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-2">Browse Fresh Produce</h1>
-                    <p className="text-gray-600">
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6 mb-8`}>
+                    <h1 className={`text-4xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Browse Fresh Produce</h1>
+                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                         Discover quality produce from local farmers in your area
                     </p>
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <h2 className="text-xl font-bold text-gray-800 mb-4">Filter Produce</h2>
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6 mb-8`}>
+                    <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Filter Produce</h2>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         {/* Search */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                 Search
                             </label>
                             <input
@@ -146,20 +123,28 @@ const BrowseProduce = () => {
                                 value={filters.search}
                                 onChange={handleFilterChange}
                                 placeholder="Search produce..."
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                    darkMode
+                                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                        : 'border-gray-300'
+                                }`}
                             />
                         </div>
 
                         {/* Category */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                 Category
                             </label>
                             <select
                                 name="category"
                                 value={filters.category}
                                 onChange={handleFilterChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                    darkMode
+                                        ? 'bg-gray-700 border-gray-600 text-white'
+                                        : 'border-gray-300'
+                                }`}
                             >
                                 <option value="">All Categories</option>
                                 {categories.map(cat => (
@@ -170,7 +155,7 @@ const BrowseProduce = () => {
 
                         {/* Location */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                 Location
                             </label>
                             <input
@@ -179,13 +164,17 @@ const BrowseProduce = () => {
                                 value={filters.location}
                                 onChange={handleFilterChange}
                                 placeholder="e.g., Kiambu"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                    darkMode
+                                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                        : 'border-gray-300'
+                                }`}
                             />
                         </div>
 
                         {/* Min Price */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                 Min Price (KES)
                             </label>
                             <input
@@ -194,13 +183,17 @@ const BrowseProduce = () => {
                                 value={filters.min_price}
                                 onChange={handleFilterChange}
                                 placeholder="0"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                    darkMode
+                                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                        : 'border-gray-300'
+                                }`}
                             />
                         </div>
 
                         {/* Max Price */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                 Max Price (KES)
                             </label>
                             <input
@@ -209,7 +202,11 @@ const BrowseProduce = () => {
                                 value={filters.max_price}
                                 onChange={handleFilterChange}
                                 placeholder="1000"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                    darkMode
+                                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                        : 'border-gray-300'
+                                }`}
                             />
                         </div>
                     </div>
@@ -217,22 +214,24 @@ const BrowseProduce = () => {
                     <div className="mt-4">
                         <button
                             onClick={clearFilters}
-                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition"
+                            className={`px-6 py-2 rounded-lg transition ${
+                                darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                            }`}
                         >
                             Clear Filters
                         </button>
                     </div>
                 </div>
 
-                {/* REPLACED PRODUCE GRID */}
-                <div className="bg-white rounded-lg shadow-md p-6">
+                {/* Produce Grid */}
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6`}>
                     {loading ? (
                         <div className="text-center py-12">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-                            <p className="text-gray-600 mt-4">Loading produce...</p>
+                            <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading produce...</p>
                         </div>
                     ) : error ? (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                        <div className={`${darkMode ? 'bg-red-900/30 border-red-700 text-red-300' : 'bg-red-100 border border-red-400 text-red-700'} px-4 py-3 rounded`}>
                             {error}
                         </div>
                     ) : (
@@ -241,13 +240,13 @@ const BrowseProduce = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {produce.length === 0 ? (
                                     <div className="col-span-full text-center py-12">
-                                        <p className="text-gray-500 text-lg">No produce listings found</p>
+                                        <p className={darkMode ? 'text-gray-400 text-lg' : 'text-gray-500 text-lg'}>No produce listings found</p>
                                     </div>
                                 ) : (
                                     produce.map((item) => (
                                         <div
                                             key={item.listing_id}
-                                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition"
+                                            className={`${darkMode ? 'bg-gray-700' : 'bg-white'} rounded-lg shadow-md overflow-hidden hover:shadow-xl transition`}
                                         >
                                             {/* Product Image */}
                                             <div className="h-48 bg-gray-200 overflow-hidden">
@@ -272,7 +271,7 @@ const BrowseProduce = () => {
                                             {/* Product Info */}
                                             <div className="p-6">
                                                 <div className="flex items-start justify-between mb-2">
-                                                    <h3 className="text-xl font-bold text-gray-800">{item.produce_name}</h3>
+                                                    <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{item.produce_name}</h3>
                                                     {item.category && (
                                                         <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
                                                             {item.category}
@@ -281,32 +280,32 @@ const BrowseProduce = () => {
                                                 </div>
 
                                                 <div className="space-y-2 mb-4">
-                                                    <p className="text-gray-600">
+                                                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                                                         <span className="font-semibold">Quantity:</span> {item.quantity} {item.unit}
                                                     </p>
                                                     {item.price_per_unit && (
-                                                        <p className="text-green-600 font-bold text-lg">
+                                                        <p className="text-green-600 dark:text-green-400 font-bold text-lg">
                                                             KES {parseFloat(item.price_per_unit).toLocaleString()} per {item.unit}
                                                         </p>
                                                     )}
-                                                    <p className="text-gray-600">
+                                                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                                                         <span className="font-semibold">Location:</span> {item.location}
                                                     </p>
                                                     {item.quality_grade && (
-                                                        <p className="text-gray-600">
+                                                        <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                                                             <span className="font-semibold">Grade:</span> {item.quality_grade}
                                                         </p>
                                                     )}
-                                                    <p className="text-gray-600">
+                                                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                                                         <span className="font-semibold">Farmer:</span> {item.farmer_name}
                                                     </p>
                                                 </div>
 
                                                 {item.description && (
-                                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{item.description}</p>
+                                                    <p className={`text-sm mb-4 line-clamp-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{item.description}</p>
                                                 )}
 
-                                                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                                <div className={`flex items-center justify-between text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                                                     <span>👁 {item.views_count} views</span>
                                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                                                         item.status === 'available' ? 'bg-green-100 text-green-800' :
@@ -335,7 +334,9 @@ const BrowseProduce = () => {
                                                     ) : !isAuthenticated ? (
                                                         <Link
                                                             to="/login"
-                                                            className="block w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg font-medium transition text-center text-sm"
+                                                            className={`block w-full py-2 rounded-lg font-medium transition text-center text-sm ${
+                                                                darkMode ? 'bg-gray-600 hover:bg-gray-500 text-gray-200' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                                            }`}
                                                         >
                                                             Login to Message Farmer
                                                         </Link>
@@ -359,7 +360,7 @@ const BrowseProduce = () => {
                 receiverName={messageDialog.farmerName}
                 produceName={messageDialog.produceName}
             />
-        </div>
+        </Layout>
     );
 };
 

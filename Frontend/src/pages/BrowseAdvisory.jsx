@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { getAllPosts } from '../services/advisoryService';
 
 const BrowseAdvisory = () => {
+  const { darkMode } = useSettings();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,7 +53,7 @@ const BrowseAdvisory = () => {
     }
   };
 
-  const handleFilterChange = (e) => {
+  const handleChange = (e) => {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value
@@ -71,9 +73,7 @@ const BrowseAdvisory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg shadow-lg p-8 mb-8">
@@ -84,8 +84,8 @@ const BrowseAdvisory = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Filter Posts</h2>
+        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6 mb-8`}>
+          <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Filter Posts</h2>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="md:col-span-2">
@@ -93,9 +93,13 @@ const BrowseAdvisory = () => {
                 type="text"
                 name="search"
                 value={filters.search}
-                onChange={handleFilterChange}
+                onChange={handleChange}
                 placeholder="Search by title or keywords..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                  darkMode
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                    : 'border-gray-300'
+                }`}
               />
             </div>
 
@@ -104,8 +108,12 @@ const BrowseAdvisory = () => {
               <select
                 name="category"
                 value={filters.category}
-                onChange={handleFilterChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                  darkMode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'border-gray-300'
+                }`}
               >
                 {categories.map(cat => (
                   <option key={cat} value={cat === 'All Categories' ? '' : cat}>
@@ -126,7 +134,9 @@ const BrowseAdvisory = () => {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg transition"
+                className={`flex-1 py-2 rounded-lg transition ${
+                  darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                }`}
               >
                 Clear Filters
               </button>
@@ -137,7 +147,7 @@ const BrowseAdvisory = () => {
         {/* Posts Grid */}
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
               Advisory Posts ({posts.length})
             </h2>
           </div>
@@ -145,28 +155,28 @@ const BrowseAdvisory = () => {
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-              <p className="text-gray-600 mt-4">Loading advisory posts...</p>
+              <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading advisory posts...</p>
             </div>
           ) : error ? (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+            <div className={`${darkMode ? 'bg-yellow-900/30 border-yellow-700 text-yellow-300' : 'bg-yellow-100 border-yellow-400 text-yellow-700'} border px-4 py-3 rounded`}>
               <p className="font-semibold">Note:</p>
               <p>{error}</p>
               <p className="text-sm mt-2">The backend advisory routes may not be implemented yet.</p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-12 text-center`}>
               <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-gray-600 text-lg">No advisory posts found.</p>
-              <p className="text-gray-500 text-sm mt-2">
+              <p className={`text-lg ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>No advisory posts found.</p>
+              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 {filters.search || filters.category ? 'Try adjusting your filters.' : 'Check back later for expert advice.'}
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (
-                <div key={post.post_id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden">
+                <div key={post.post_id} className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md hover:shadow-lg transition overflow-hidden`}>
                   {/* Category Badge */}
                   <div className="bg-green-600 text-white px-4 py-2">
                     <span className="text-xs font-semibold uppercase">{post.category}</span>
@@ -174,12 +184,12 @@ const BrowseAdvisory = () => {
 
                   <div className="p-6">
                     {/* Title */}
-                    <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
+                    <h3 className={`text-lg font-bold mb-2 line-clamp-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                       {post.title}
                     </h3>
 
                     {/* Expert Info */}
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                    <div className={`flex items-center gap-2 text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
@@ -187,7 +197,7 @@ const BrowseAdvisory = () => {
                     </div>
 
                     {/* Content Preview */}
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    <p className={`text-sm mb-4 line-clamp-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       {post.content}
                     </p>
 
@@ -195,7 +205,9 @@ const BrowseAdvisory = () => {
                     {post.tags && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.split(',').slice(0, 3).map((tag, index) => (
-                          <span key={index} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                          <span key={index} className={`text-xs px-2 py-1 rounded ${
+                            darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
+                          }`}>
                             #{tag.trim()}
                           </span>
                         ))}
@@ -203,8 +215,8 @@ const BrowseAdvisory = () => {
                     )}
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                    <div className={`flex items-center justify-between pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                      <div className={`flex items-center gap-4 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                         <div className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -219,7 +231,7 @@ const BrowseAdvisory = () => {
 
                       <Link
                         to={`/advisory/posts/${post.post_id}`}
-                        className="text-green-600 hover:text-green-700 font-medium text-sm"
+                        className="text-green-600 dark:text-green-400 hover:text-green-700 font-medium text-sm"
                       >
                         Read More →
                       </Link>
@@ -231,7 +243,7 @@ const BrowseAdvisory = () => {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

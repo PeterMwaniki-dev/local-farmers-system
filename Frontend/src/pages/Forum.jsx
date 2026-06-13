@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import { getAllForumPosts } from '../services/forumService';
+import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
+import { useSettings } from '../contexts/SettingsContext';
+import { getAllForumPosts } from '../services/forumService';
 
 const Forum = () => {
   const { isAuthenticated } = useAuth();
+  const { darkMode } = useSettings();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -50,7 +52,7 @@ const Forum = () => {
     }
   };
 
-  const handleFilterChange = (e) => {
+  const handleChange = (e) => {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value
@@ -70,9 +72,7 @@ const Forum = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-lg p-8 mb-8">
@@ -95,8 +95,8 @@ const Forum = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Filter Discussions</h2>
+        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6 mb-8`}>
+          <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Filter Discussions</h2>
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="md:col-span-2">
@@ -104,9 +104,13 @@ const Forum = () => {
                 type="text"
                 name="search"
                 value={filters.search}
-                onChange={handleFilterChange}
+                onChange={handleChange}
                 placeholder="Search discussions..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  darkMode
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                    : 'border-gray-300'
+                }`}
               />
             </div>
 
@@ -115,8 +119,12 @@ const Forum = () => {
               <select
                 name="category"
                 value={filters.category}
-                onChange={handleFilterChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  darkMode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'border-gray-300'
+                }`}
               >
                 {categories.map(cat => (
                   <option key={cat} value={cat === 'All Categories' ? '' : cat}>
@@ -137,7 +145,9 @@ const Forum = () => {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg transition"
+                className={`flex-1 py-2 rounded-lg transition ${
+                  darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                }`}
               >
                 Clear Filters
               </button>
@@ -148,7 +158,7 @@ const Forum = () => {
         {/* Posts List */}
         <div>
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
               Discussions ({posts.length})
             </h2>
           </div>
@@ -156,21 +166,21 @@ const Forum = () => {
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-4">Loading discussions...</p>
+              <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading discussions...</p>
             </div>
           ) : error ? (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+            <div className={`${darkMode ? 'bg-yellow-900/30 border-yellow-700 text-yellow-300' : 'bg-yellow-100 border-yellow-400 text-yellow-700'} border px-4 py-3 rounded`}>
               <p className="font-semibold">Note:</p>
               <p>{error}</p>
               <p className="text-sm mt-2">The backend forum routes may not be implemented yet.</p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-12 text-center`}>
               <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
               </svg>
-              <p className="text-gray-600 text-lg mb-2">No discussions found.</p>
-              <p className="text-gray-500 text-sm mb-4">
+              <p className={`text-lg mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>No discussions found.</p>
+              <p className={`text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 {filters.search || filters.category ? 'Try adjusting your filters.' : 'Be the first to start a discussion!'}
               </p>
               {isAuthenticated && (
@@ -188,25 +198,27 @@ const Forum = () => {
                 <Link
                   key={post.post_id}
                   to={`/forum/${post.post_id}`}
-                  className="block bg-white rounded-lg shadow-md hover:shadow-lg transition p-6"
+                  className={`block ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md hover:shadow-lg transition p-6`}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                          darkMode ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-800'
+                        }`}>
                           {post.category}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-800 hover:text-blue-600 mb-2">
+                      <h3 className={`text-xl font-bold mb-2 hover:text-blue-600 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                         {post.title}
                       </h3>
-                      <p className="text-gray-600 line-clamp-2">
+                      <p className={`line-clamp-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                         {post.content}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-sm text-gray-500">
+                  <div className={`flex items-center justify-between text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     <div className="flex items-center gap-4">
                       {/* Author */}
                       <div className="flex items-center gap-2">
@@ -215,7 +227,7 @@ const Forum = () => {
                         </svg>
                         <span className="font-medium">{post.user_name || 'User'}</span>
                         <span className="text-gray-400">•</span>
-                        <span className="capitalize text-gray-500">{post.user_type}</span>
+                        <span className="capitalize">{post.user_type}</span>
                       </div>
 
                       {/* Date */}
@@ -252,7 +264,7 @@ const Forum = () => {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

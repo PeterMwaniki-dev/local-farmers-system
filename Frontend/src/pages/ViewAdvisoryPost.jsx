@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { getPostById, recordAdvisoryPostView } from '../services/advisoryService';
 
 const ViewAdvisoryPost = () => {
   const { id } = useParams();
+  const { darkMode } = useSettings();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -43,30 +45,28 @@ const ViewAdvisoryPost = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8 text-center`}>
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading post...</p>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading post...</p>
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-8">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8`}>
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Post Not Found</h2>
-                <p className="text-gray-600 mb-6">{error || 'This advisory post could not be found.'}</p>
+                <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Post Not Found</h2>
+                <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{error || 'This advisory post could not be found.'}</p>
                 <Link
                   to="/advisory"
                   className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition"
@@ -77,14 +77,12 @@ const ViewAdvisoryPost = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
@@ -99,7 +97,7 @@ const ViewAdvisoryPost = () => {
           </Link>
 
           {/* Post Card */}
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className={`rounded-lg shadow-lg overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
             {/* Header */}
             <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-8">
               <div className="flex items-center gap-2 text-green-100 text-sm mb-3">
@@ -132,7 +130,7 @@ const ViewAdvisoryPost = () => {
             {/* Content */}
             <div className="p-8">
               {/* Stats */}
-              <div className="flex items-center gap-6 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+              <div className={`flex items-center gap-6 text-sm mb-6 pb-6 border-b ${darkMode ? 'text-gray-300 border-gray-700' : 'text-gray-600 border-gray-200'}`}>
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -144,18 +142,18 @@ const ViewAdvisoryPost = () => {
 
               {/* Main Content */}
               <div className="prose prose-lg max-w-none">
-                <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+                <div className={`leading-relaxed whitespace-pre-line ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
                   {post.content}
                 </div>
               </div>
 
               {/* Tags */}
               {post.tags && (
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3">Tags:</h3>
+                <div className={`mt-8 pt-6 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Tags:</h3>
                   <div className="flex flex-wrap gap-2">
                     {post.tags.split(',').map((tag, index) => (
-                      <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                      <span key={index} className={`px-3 py-1 rounded-full text-sm ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-100 text-gray-700'}`}>
                         #{tag.trim()}
                       </span>
                     ))}
@@ -165,8 +163,8 @@ const ViewAdvisoryPost = () => {
             </div>
 
             {/* Footer */}
-            <div className="bg-gray-50 px-8 py-6">
-              <p className="text-sm text-gray-600 text-center">
+            <div className={`px-8 py-6 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+              <p className={`text-sm text-center ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 Was this advisory helpful? Contact the expert or explore more agricultural advice.
               </p>
               <div className="flex justify-center gap-4 mt-4">
@@ -181,7 +179,7 @@ const ViewAdvisoryPost = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { getMyListings, deleteProduce } from '../services/produceService';
 
 const FarmerMyProduce = () => {
+  const { darkMode } = useSettings();
   const [produce, setProduce] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,40 +43,37 @@ const FarmerMyProduce = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'available':
-        return 'bg-green-100 text-green-800';
+        return darkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800';
       case 'sold':
-        return 'bg-blue-100 text-blue-800';
+        return darkMode ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-800';
       case 'expired':
-        return 'bg-red-100 text-red-800';
+        return darkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-100 text-gray-800';
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Loading your produce...</p>
+            <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading your produce...</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">My Produce Listings</h1>
-            <p className="text-gray-600 mt-1">Manage your produce inventory</p>
+            <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>My Produce Listings</h1>
+            <p className={`mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Manage your produce inventory</p>
           </div>
           <Link
             to="/produce/create"
@@ -89,38 +88,38 @@ const FarmerMyProduce = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Total Listings</p>
-            <p className="text-3xl font-bold text-gray-800">{produce.length}</p>
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-6`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Listings</p>
+            <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{produce.length}</p>
           </div>
-          <div className="bg-green-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Available</p>
-            <p className="text-3xl font-bold text-green-600">
+          <div className={`${darkMode ? 'bg-green-900/30' : 'bg-green-50'} rounded-lg shadow-md p-6`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Available</p>
+            <p className="text-3xl font-bold text-green-600 dark:text-green-400">
               {produce.filter(p => p.status === 'available').length}
             </p>
           </div>
-          <div className="bg-blue-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Sold</p>
-            <p className="text-3xl font-bold text-blue-600">
+          <div className={`${darkMode ? 'bg-blue-900/30' : 'bg-blue-50'} rounded-lg shadow-md p-6`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Sold</p>
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
               {produce.filter(p => p.status === 'sold').length}
             </p>
           </div>
-          <div className="bg-red-50 rounded-lg shadow-md p-6">
-            <p className="text-gray-500 text-sm">Expired</p>
-            <p className="text-3xl font-bold text-red-600">
+          <div className={`${darkMode ? 'bg-red-900/30' : 'bg-red-50'} rounded-lg shadow-md p-6`}>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Expired</p>
+            <p className="text-3xl font-bold text-red-600 dark:text-red-400">
               {produce.filter(p => p.status === 'expired').length}
             </p>
           </div>
         </div>
 
         {/* Produce List */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md overflow-hidden`}>
           {produce.length === 0 ? (
             <div className="text-center py-12">
-              <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
-              <p className="text-gray-600 mb-4">You haven't listed any produce yet.</p>
+              <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>You haven't listed any produce yet.</p>
               <Link
                 to="/produce/create"
                 className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition"
@@ -131,21 +130,21 @@ const FarmerMyProduce = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className={`${darkMode ? 'bg-gray-700 border-b border-gray-600' : 'bg-gray-50 border-b border-gray-200'}`}>
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produce</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price/Unit</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Views</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Image</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Produce</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Category</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Quantity</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Price/Unit</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Status</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Views</th>
+                    <th className={`px-6 py-3 text-left text-xs font-medium uppercase ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className={`${darkMode ? 'bg-gray-800 divide-y divide-gray-700' : 'bg-white divide-y divide-gray-200'}`}>
                   {produce.map((item) => (
-                    <tr key={item.listing_id} className="hover:bg-gray-50">
+                    <tr key={item.listing_id} className={`${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {item.image_url ? (
                           <img
@@ -157,7 +156,7 @@ const FarmerMyProduce = () => {
                             }}
                           />
                         ) : (
-                          <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
+                          <div className={`w-16 h-16 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded flex items-center justify-center`}>
                             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -165,16 +164,16 @@ const FarmerMyProduce = () => {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-medium text-gray-900">{item.produce_name}</div>
-                        <div className="text-sm text-gray-500">{item.location}</div>
+                        <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>{item.produce_name}</div>
+                        <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.location}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                         {item.category}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                         {item.quantity} {item.unit}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600 dark:text-green-400">
                         KES {item.price_per_unit}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -182,7 +181,7 @@ const FarmerMyProduce = () => {
                           {item.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                         {item.views_count || 0}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -209,7 +208,7 @@ const FarmerMyProduce = () => {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
