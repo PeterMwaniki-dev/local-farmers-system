@@ -2,6 +2,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SettingsProvider } from './contexts/SettingsContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
@@ -35,6 +36,7 @@ import BuyerRequests from './pages/BuyerRequests';
 import BuyerMyRequests from './pages/BuyerMyRequests';
 import ExpertMyAdvisory from './pages/ExpertMyAdvisory';
 import Messages from './pages/Messages';
+import Settings from './pages/Settings';
 
 // Home redirect component
 const HomeRedirect = () => {
@@ -49,180 +51,192 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/produce" element={<BrowseProduce />} />
-          <Route path="/advisory" element={<BrowseAdvisory />} />
-          <Route path="/advisory/posts/:id" element={<ViewAdvisoryPost />} />
-          <Route path="/forum" element={<Forum />} />
-          <Route path="/forum/:id" element={<ViewForumPost />} />
-          <Route path="/trends" element={<MarketTrends />} />
-          <Route path="/produce/my-listings" element={<ProtectedRoute><FarmerMyProduce /></ProtectedRoute>} />
-          <Route path="/produce/:id" element={<ProduceDetails />} />
-          <Route path="/buyer-requests" element={<BuyerRequests />} />
-          <Route path="/buyer-requests/my-requests" element={<ProtectedRoute allowedRoles={['buyer']}><BuyerMyRequests /></ProtectedRoute>} />
-          <Route path="/advisory/my-posts" element={<ProtectedRoute allowedRoles={['expert']}><ExpertMyAdvisory /></ProtectedRoute>} />
-          <Route
-            path="/messages"
-            element={
-              <ProtectedRoute allowedRoles={['farmer', 'buyer', 'expert']}>
-                <Messages />
-              </ProtectedRoute>
-            }
-          />
+        <SettingsProvider>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/produce" element={<BrowseProduce />} />
+            <Route path="/advisory" element={<BrowseAdvisory />} />
+            <Route path="/advisory/posts/:id" element={<ViewAdvisoryPost />} />
+            <Route path="/forum" element={<Forum />} />
+            <Route path="/forum/:id" element={<ViewForumPost />} />
+            <Route path="/trends" element={<MarketTrends />} />
+            <Route path="/produce/my-listings" element={<ProtectedRoute><FarmerMyProduce /></ProtectedRoute>} />
+            <Route path="/produce/:id" element={<ProduceDetails />} />
+            <Route path="/buyer-requests" element={<BuyerRequests />} />
+            <Route path="/buyer-requests/my-requests" element={<ProtectedRoute allowedRoles={['buyer']}><BuyerMyRequests /></ProtectedRoute>} />
+            <Route path="/advisory/my-posts" element={<ProtectedRoute allowedRoles={['expert']}><ExpertMyAdvisory /></ProtectedRoute>} />
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute allowedRoles={['farmer', 'buyer', 'expert']}>
+                  <Messages />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected Routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Profile Routes */}
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/edit"
-            element={
-              <ProtectedRoute>
-                <EditProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/change-password"
-            element={
-              <ProtectedRoute>
-                <ChangePassword />
-              </ProtectedRoute>
-            }
-          />
+            {/* Settings Route */}
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Admin Routes */}
-          <Route
-            path="/admin/users"
-            element={
-              <ProtectedRoute>
-                <ManageUsers />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/produce"
-            element={
-              <ProtectedRoute>
-                <ManageProduce />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/forum"
-            element={
-              <ProtectedRoute>
-                <ManageForum />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/reports"
-            element={
-              <ProtectedRoute>
-                <AdminReports />
-              </ProtectedRoute>
-            }
-          />
+            {/* Profile Routes */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/edit"
+              element={
+                <ProtectedRoute>
+                  <EditProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/change-password"
+              element={
+                <ProtectedRoute>
+                  <ChangePassword />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Farmer Routes */}
-          <Route
-            path="/produce/create"
-            element={
-              <ProtectedRoute allowedRoles={['farmer']}>
-                <CreateProduce />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/produce/edit/:id"
-            element={
-              <ProtectedRoute allowedRoles={['farmer']}>
-                <EditProduce />
-              </ProtectedRoute>
-            }
-          />
+            {/* Admin Routes */}
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute>
+                  <ManageUsers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/produce"
+              element={
+                <ProtectedRoute>
+                  <ManageProduce />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/forum"
+              element={
+                <ProtectedRoute>
+                  <ManageForum />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <ProtectedRoute>
+                  <AdminReports />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Buyer Routes */}
-          <Route
-            path="/requests/create"
-            element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <CreateRequest />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/requests/edit/:id"
-            element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <EditRequest />
-              </ProtectedRoute>
-            }
-          />
+            {/* Farmer Routes */}
+            <Route
+              path="/produce/create"
+              element={
+                <ProtectedRoute allowedRoles={['farmer']}>
+                  <CreateProduce />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/produce/edit/:id"
+              element={
+                <ProtectedRoute allowedRoles={['farmer']}>
+                  <EditProduce />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Expert/Advisory Routes */}
-          <Route
-            path="/advisory/posts/create"
-            element={
-              <ProtectedRoute allowedRoles={['expert']}>
-                <CreateAdvisoryPost />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/advisory/posts/edit/:id"
-            element={
-              <ProtectedRoute allowedRoles={['expert']}>
-                <EditAdvisoryPost />
-              </ProtectedRoute>
-            }
-          />
+            {/* Buyer Routes */}
+            <Route
+              path="/requests/create"
+              element={
+                <ProtectedRoute allowedRoles={['buyer']}>
+                  <CreateRequest />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/requests/edit/:id"
+              element={
+                <ProtectedRoute allowedRoles={['buyer']}>
+                  <EditRequest />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Forum Routes - Protected */}
-          <Route
-            path="/forum/create"
-            element={
-              <ProtectedRoute>
-                <CreateForumPost />
-              </ProtectedRoute>
-            }
-          />
+            {/* Expert/Advisory Routes */}
+            <Route
+              path="/advisory/posts/create"
+              element={
+                <ProtectedRoute allowedRoles={['expert']}>
+                  <CreateAdvisoryPost />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/advisory/posts/edit/:id"
+              element={
+                <ProtectedRoute allowedRoles={['expert']}>
+                  <EditAdvisoryPost />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Redirect root to landing or dashboard */}
-          <Route path="/" element={<HomeRedirect />} />
+            {/* Forum Routes - Protected */}
+            <Route
+              path="/forum/create"
+              element={
+                <ProtectedRoute>
+                  <CreateForumPost />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* 404 - Not Found */}
-          <Route
-            path="*"
-            element={
-              <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                  <h2 className="text-4xl font-bold text-gray-800 mb-4">404</h2>
-                  <p className="text-gray-600">Page not found</p>
+            {/* Redirect root to landing or dashboard */}
+            <Route path="/" element={<HomeRedirect />} />
+
+            {/* 404 - Not Found */}
+            <Route
+              path="*"
+              element={
+                <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                  <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4">404</h2>
+                    <p className="text-gray-600">Page not found</p>
+                  </div>
                 </div>
-              </div>
-            }
-          />
-        </Routes>
+              }
+            />
+          </Routes>
+        </SettingsProvider>
       </AuthProvider>
     </Router>
   );
