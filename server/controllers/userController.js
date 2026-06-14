@@ -244,6 +244,17 @@ exports.getUserStats = async (req, res) => {
       );
       stats.total_posts = postStats[0].total_posts || 0;
       stats.total_views = postStats[0].total_views || 0;
+
+      // Calculate questions answered: forum posts + comments by expert
+      const [forumPostCount] = await pool.query(
+        'SELECT COUNT(*) as count FROM forum_posts WHERE user_id = ?',
+        [userId]
+      );
+      const [forumCommentCount] = await pool.query(
+        'SELECT COUNT(*) as count FROM forum_comments WHERE user_id = ?',
+        [userId]
+      );
+      stats.questions_answered = (forumPostCount[0].count || 0) + (forumCommentCount[0].count || 0);
     }
 
     // Get forum posts count for all users

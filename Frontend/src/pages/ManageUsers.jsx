@@ -8,6 +8,12 @@ const ManageUsers = () => {
   const { darkMode } = useSettings();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    total: 0,
+    farmers: 0,
+    buyers: 0,
+    experts: 0
+  });
   const [filters, setFilters] = useState({
     search: '',
     user_type: '',
@@ -22,6 +28,24 @@ const ManageUsers = () => {
   useEffect(() => {
     fetchUsers();
   }, [filters]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await API.get('/admin/stats');
+      setStats({
+        total: response.data.totalUsers,
+        farmers: response.data.totalFarmers,
+        buyers: response.data.totalBuyers,
+        experts: response.data.totalExperts
+      });
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -107,24 +131,24 @@ const ManageUsers = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Users</p>
-            <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{pagination.total}</p>
+            <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{stats.total || pagination.total}</p>
           </div>
           <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-green-50'}`}>
             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Farmers</p>
             <p className="text-3xl font-bold text-green-600">
-              {users.filter(u => u.user_type === 'farmer').length}
+              {stats.farmers}
             </p>
           </div>
           <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-blue-50'}`}>
             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Buyers</p>
             <p className="text-3xl font-bold text-blue-600">
-              {users.filter(u => u.user_type === 'buyer').length}
+              {stats.buyers}
             </p>
           </div>
           <div className={`rounded-lg shadow-md p-6 ${darkMode ? 'bg-gray-800' : 'bg-purple-50'}`}>
             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Experts</p>
             <p className="text-3xl font-bold text-purple-600">
-              {users.filter(u => u.user_type === 'expert').length}
+              {stats.experts}
             </p>
           </div>
         </div>

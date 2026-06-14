@@ -5,6 +5,7 @@ import WeatherWidget from '../components/WeatherWidget';
 import { useAuth } from '../contexts/AuthContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { getMyPosts, deletePost } from '../services/advisoryService';
+import { getUserStats } from '../services/userService';
 
 const ExpertDashboard = () => {
   const { user } = useAuth();
@@ -12,10 +13,21 @@ const ExpertDashboard = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [userStats, setUserStats] = useState({ total_posts: 0, total_views: 0, questions_answered: 0 });
 
   useEffect(() => {
     fetchMyPosts();
+    fetchUserStats();
   }, []);
+
+  const fetchUserStats = async () => {
+    try {
+      const stats = await getUserStats();
+      setUserStats(stats);
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
+  };
 
   const fetchMyPosts = async () => {
     try {
@@ -45,10 +57,7 @@ const ExpertDashboard = () => {
     }
   };
 
-  // Safe calculation of total views
-  const totalViews = Array.isArray(posts) 
-    ? posts.reduce((sum, post) => sum + (post.views_count || 0), 0)
-    : 0;
+
 
   return (
     <Layout>
@@ -74,7 +83,7 @@ const ExpertDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Posts</p>
-                <p className="text-3xl font-bold text-green-600">{posts.length}</p>
+                <p className="text-3xl font-bold text-green-600">{userStats.total_posts}</p>
               </div>
               <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
                 <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +97,7 @@ const ExpertDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total Views</p>
-                <p className="text-3xl font-bold text-blue-600">{totalViews}</p>
+                <p className="text-3xl font-bold text-blue-600">{userStats.total_views}</p>
               </div>
               <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
                 <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +112,7 @@ const ExpertDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Questions Answered</p>
-                <p className="text-3xl font-bold text-purple-600">0</p>
+                <p className="text-3xl font-bold text-purple-600">{userStats.questions_answered}</p>
               </div>
               <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
                 <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
