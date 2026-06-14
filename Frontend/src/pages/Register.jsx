@@ -138,7 +138,7 @@ const Register = () => {
                       ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400'
                       : 'border-gray-300'
                   }`}
-                  placeholder="John Doe"
+                  placeholder="John Kimani"
                 />
               </div>
 
