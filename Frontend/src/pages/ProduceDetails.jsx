@@ -4,17 +4,27 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProduceById, recordProduceView } from '../services/produceService';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
+import MessageDialog from '../components/MessageDialog';
 import { useAuth } from '../contexts/AuthContext';
 
 const ProduceDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    const { darkMode } = useSettings();
     const [produce, setProduce] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [messageDialogOpen, setMessageDialogOpen] = useState(false);
     const hasRecordedViewRef = useRef(false);
+
+    const canMessageFarmer = produce &&
+        isAuthenticated &&
+        user &&
+        ['buyer', 'expert'].includes(user.user_type) &&
+        produce.farmer_id !== user.user_id;
 
     useEffect(() => {
         hasRecordedViewRef.current = false;
@@ -49,24 +59,22 @@ const ProduceDetails = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100">
-                <Navbar />
+            <Layout>
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center py-12">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-                        <p className="text-gray-600 mt-4">Loading details...</p>
+                        <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading details...</p>
                     </div>
                 </div>
-            </div>
+            </Layout>
         );
     }
 
     if (error || !produce) {
         return (
-            <div className="min-h-screen bg-gray-100">
-                <Navbar />
+            <Layout>
                 <div className="container mx-auto px-4 py-8">
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <div className={`${darkMode ? 'bg-red-900/30 border-red-700 text-red-300' : 'bg-red-100 border border-red-400 text-red-700'} px-4 py-3 rounded`}>
                         {error || 'Produce not found'}
                     </div>
                     <button
@@ -76,14 +84,12 @@ const ProduceDetails = () => {
                         ← Back to Browse Produce
                     </button>
                 </div>
-            </div>
+            </Layout>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navbar />
-
+        <Layout>
             <div className="container mx-auto px-4 py-8">
                 <button
                     onClick={() => navigate('/produce')}
@@ -95,7 +101,7 @@ const ProduceDetails = () => {
                     Back to Browse Produce
                 </button>
 
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg overflow-hidden`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
                         <div>
                             {produce.image_url ? (
@@ -116,13 +122,13 @@ const ProduceDetails = () => {
                             )}
 
                             <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                                <div className="bg-green-50 p-3 rounded-lg">
+                                <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-green-50'}`}>
                                     <p className="text-2xl font-bold text-green-600">{produce.views_count}</p>
-                                    <p className="text-xs text-gray-600">Views</p>
+                                    <p className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Views</p>
                                 </div>
-                                <div className="bg-blue-50 p-3 rounded-lg">
+                                <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-blue-50'}`}>
                                     <p className="text-2xl font-bold text-blue-600">{produce.quantity}</p>
-                                    <p className="text-xs text-gray-600">{produce.unit} Available</p>
+                                    <p className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{produce.unit} Available</p>
                                 </div>
                                 <div className={`p-3 rounded-lg ${
                                     produce.status === 'available' ? 'bg-green-100' :
@@ -147,19 +153,19 @@ const ProduceDetails = () => {
                                 )}
                             </div>
 
-                            <h1 className="text-4xl font-bold text-gray-800 mb-4">{produce.produce_name}</h1>
+                            <h1 className={`text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{produce.produce_name}</h1>
 
                             <div className="mb-6">
                                 <p className="text-3xl font-bold text-green-600">
                                     KES {parseFloat(produce.price_per_unit).toLocaleString()}
                                 </p>
-                                <p className="text-gray-600">per {produce.unit}</p>
+                                <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>per {produce.unit}</p>
                             </div>
 
                             {produce.description && (
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
-                                    <p className="text-gray-600 leading-relaxed">{produce.description}</p>
+                                    <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Description</h3>
+                                    <p className={`leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{produce.description}</p>
                                 </div>
                             )}
 
@@ -169,17 +175,17 @@ const ProduceDetails = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span className="text-gray-700"><strong>Location:</strong> {produce.location}</span>
+                                    <span className={darkMode ? 'text-gray-200' : 'text-gray-700'}><strong>Location:</strong> {produce.location}</span>
                                 </div>
 
                                 {produce.quality_grade && (
                                     <div className="flex items-center gap-3">
-                                        <span className="text-gray-700"><strong>Quality Grade:</strong> {produce.quality_grade}</span>
+                                        <span className={darkMode ? 'text-gray-200' : 'text-gray-700'}><strong>Quality Grade:</strong> {produce.quality_grade}</span>
                                     </div>
                                 )}
 
                                 <div className="flex items-center gap-3">
-                                    <span className="text-gray-700">
+                                    <span className={darkMode ? 'text-gray-200' : 'text-gray-700'}>
                                         <strong>Listed:</strong> {new Date(produce.created_at).toLocaleDateString('en-US', { 
                                             year: 'numeric', 
                                             month: 'long', 
@@ -189,47 +195,78 @@ const ProduceDetails = () => {
                                 </div>
                             </div>
 
-                            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Farmer Information</h3>
+                            <div className={`rounded-lg p-6 mb-6 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                                <h3 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Farmer Information</h3>
                                 <div className="space-y-2">
-                                    <p className="text-gray-700">
+                                    <p className={darkMode ? 'text-gray-200' : 'text-gray-700'}>
                                         <strong>Name:</strong> {produce.farmer_name}
                                     </p>
                                     {isAuthenticated ? (
                                         <>
-                                            <p><strong>Phone:</strong> {produce.farmer_phone}</p>
-                                            <p><strong>Email:</strong> {produce.farmer_email}</p>
+                                            <p className={darkMode ? 'text-gray-200' : 'text-gray-700'}><strong>Phone:</strong> {produce.farmer_phone}</p>
+                                            <p className={darkMode ? 'text-gray-200' : 'text-gray-700'}><strong>Email:</strong> {produce.farmer_email}</p>
                                         </>
                                     ) : (
-                                        <Link to="/login">Login to view contact info</Link>
+                                        <Link to="/login" className="text-green-600">Login to view contact info</Link>
                                     )}
                                 </div>
                             </div>
 
                             {isAuthenticated ? (
-                                <div className="flex gap-4">
-                                    <a
-                                        href={`tel:${produce.farmer_phone}`}
-                                        className="flex-1 bg-green-600 text-white py-3 rounded-lg text-center"
-                                    >
-                                        📞 Call Farmer
-                                    </a>
+                                <div className="space-y-3">
+                                    <div className="flex gap-4">
+                                        <a
+                                            href={`tel:${produce.farmer_phone}`}
+                                            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-center transition"
+                                        >
+                                            Call Farmer
+                                        </a>
 
-                                    <a
-                                        href={`mailto:${produce.farmer_email}`}
-                                        className="flex-1 bg-blue-600 text-white py-3 rounded-lg text-center"
-                                    >
-                                        ✉️ Email Farmer
-                                    </a>
+                                        <a
+                                            href={`mailto:${produce.farmer_email}`}
+                                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-center transition"
+                                        >
+                                            Email Farmer
+                                        </a>
+                                    </div>
+
+                                    {canMessageFarmer && (
+                                        <button
+                                            onClick={() => setMessageDialogOpen(true)}
+                                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-medium transition"
+                                        >
+                                            Message Farmer
+                                        </button>
+                                    )}
                                 </div>
                             ) : (
-                                <Link to="/register">Register to Contact Farmer</Link>
+                                <div className="space-y-2">
+                                    <Link
+                                        to="/login"
+                                        className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg text-center font-medium transition"
+                                    >
+                                        Login to Message Farmer
+                                    </Link>
+                                    <Link to="/register" className="block text-center text-green-600 hover:text-green-700">
+                                        Or register to contact farmer
+                                    </Link>
+                                </div>
                             )}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            {produce && (
+                <MessageDialog
+                    isOpen={messageDialogOpen}
+                    onClose={() => setMessageDialogOpen(false)}
+                    receiverId={produce.farmer_id}
+                    receiverName={produce.farmer_name}
+                    produceName={produce.produce_name}
+                />
+            )}
+        </Layout>
     );
 };
 

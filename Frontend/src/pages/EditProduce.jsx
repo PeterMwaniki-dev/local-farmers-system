@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { getProduceById, updateProduce } from '../services/produceService';
 
 const EditProduce = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { darkMode } = useSettings();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -146,29 +148,26 @@ const EditProduce = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Loading...</p>
+            <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading...</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Produce Listing</h1>
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8`}>
+            <h1 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Edit Produce Listing</h1>
 
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              <div className={`${darkMode ? 'bg-red-900/30 border-red-700 text-red-300' : 'bg-red-100 border border-red-400 text-red-700'} px-4 py-3 rounded mb-6`}>
                 {error}
               </div>
             )}
@@ -177,7 +176,7 @@ const EditProduce = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Produce Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Produce Name *
                   </label>
                   <input
@@ -186,21 +185,25 @@ const EditProduce = () => {
                     value={formData.produce_name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="e.g., Tomatoes, Cabbage, Maize"
                   />
                 </div>
 
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Category
                   </label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="">Select category</option>
                     <option value="Vegetables">Vegetables</option>
@@ -216,7 +219,7 @@ const EditProduce = () => {
 
                 {/* Quantity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Quantity *
                   </label>
                   <input
@@ -227,13 +230,15 @@ const EditProduce = () => {
                     required
                     min="0"
                     step="0.01"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Unit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Unit *
                   </label>
                   <select
@@ -241,7 +246,9 @@ const EditProduce = () => {
                     value={formData.unit}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="kg">Kilograms (kg)</option>
                     <option value="g">Grams (g)</option>
@@ -255,7 +262,7 @@ const EditProduce = () => {
 
                 {/* Price per Unit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Price per Unit (KES)
                   </label>
                   <input
@@ -265,21 +272,25 @@ const EditProduce = () => {
                     onChange={handleChange}
                     min="0"
                     step="0.01"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="Optional"
                   />
                 </div>
 
                 {/* Quality Grade */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Quality Grade
                   </label>
                   <select
                     name="quality_grade"
                     value={formData.quality_grade}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="">Select grade</option>
                     <option value="Premium">Premium</option>
@@ -291,14 +302,16 @@ const EditProduce = () => {
 
                 {/* Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Status
                   </label>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="available">Available</option>
                     <option value="sold">Sold</option>
@@ -308,7 +321,7 @@ const EditProduce = () => {
 
                 {/* Available From */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Available From
                   </label>
                   <input
@@ -316,13 +329,15 @@ const EditProduce = () => {
                     name="available_from"
                     value={formData.available_from}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Available Until */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Available Until
                   </label>
                   <input
@@ -330,13 +345,15 @@ const EditProduce = () => {
                     name="available_until"
                     value={formData.available_until}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Location */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Location *
                   </label>
                   <input
@@ -345,21 +362,23 @@ const EditProduce = () => {
                     value={formData.location}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="e.g., Kiambu, Nairobi"
                   />
                 </div>
 
                 {/* Image Upload */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Product Image
                   </label>
 
                   {/* Current Image */}
                   {currentImage && !imagePreview && (
                     <div className="mb-4">
-                      <p className="text-sm text-gray-600 mb-2">Current Image:</p>
+                      <p className={`text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Current Image:</p>
                       <img 
                         src={`http://localhost:5000${currentImage}`} 
                         alt="Current" 
@@ -377,20 +396,20 @@ const EditProduce = () => {
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="block w-full text-sm text-gray-500
+                      className={`block w-full text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-lg file:border-0
                         file:text-sm file:font-semibold
                         file:bg-green-50 file:text-green-700
                         hover:file:bg-green-100
-                        cursor-pointer"
+                        cursor-pointer`}
                     />
                   </div>
 
                   {/* New Image Preview */}
                   {imagePreview && (
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600 mb-2">New Image Preview:</p>
+                      <p className={`text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>New Image Preview:</p>
                       <div className="relative inline-block">
                         <img 
                           src={imagePreview} 
@@ -410,7 +429,7 @@ const EditProduce = () => {
                     </div>
                   )}
                   
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     {currentImage && !imagePreview 
                       ? 'Upload a new image to replace the current one' 
                       : 'Max size: 5MB. Supported formats: JPEG, PNG, GIF, WebP'}
@@ -419,7 +438,7 @@ const EditProduce = () => {
 
                 {/* Description */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Description
                   </label>
                   <textarea
@@ -427,7 +446,9 @@ const EditProduce = () => {
                     value={formData.description}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="Additional details about your produce..."
                   />
                 </div>
@@ -445,7 +466,9 @@ const EditProduce = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/dashboard')}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-medium transition"
+                  className={`flex-1 py-3 rounded-lg font-medium transition ${
+                    darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                  }`}
                 >
                   Cancel
                 </button>
@@ -454,7 +477,7 @@ const EditProduce = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

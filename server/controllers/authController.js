@@ -160,9 +160,18 @@ const login = async (req, res) => {
             });
         }
 
-        // Check password
-        const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
-        console.log('🔑 Password match:', isPasswordMatch);
+        // Check password (guard against bad/legacy hashes)
+        let isPasswordMatch = false;
+        try {
+            isPasswordMatch = await bcrypt.compare(password, user.password_hash);
+        } catch (compareErr) {
+            console.error('Password compare failed:', compareErr?.message || compareErr);
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
+        }
+
         if (!isPasswordMatch) {
             return res.status(401).json({
                 success: false,

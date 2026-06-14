@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { createProduce } from '../services/produceService';
 
 const CreateProduce = () => {
   const navigate = useNavigate();
+  const { darkMode } = useSettings();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [imageFile, setImageFile] = useState(null);
@@ -101,16 +103,14 @@ const CreateProduce = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">List New Produce</h1>
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8`}>
+            <h1 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>List New Produce</h1>
 
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              <div className={`${darkMode ? 'bg-red-900/30 border-red-700 text-red-300' : 'bg-red-100 border border-red-400 text-red-700'} px-4 py-3 rounded mb-6`}>
                 {error}
               </div>
             )}
@@ -119,7 +119,7 @@ const CreateProduce = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Produce Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Produce Name *
                   </label>
                   <input
@@ -128,21 +128,25 @@ const CreateProduce = () => {
                     value={formData.produce_name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="e.g., Tomatoes, Cabbage, Maize"
                   />
                 </div>
 
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Category
                   </label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="">Select category</option>
                     <option value="Vegetables">Vegetables</option>
@@ -158,7 +162,7 @@ const CreateProduce = () => {
 
                 {/* Quantity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Quantity *
                   </label>
                   <input
@@ -169,13 +173,15 @@ const CreateProduce = () => {
                     required
                     min="0"
                     step="0.01"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Unit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Unit *
                   </label>
                   <select
@@ -183,7 +189,9 @@ const CreateProduce = () => {
                     value={formData.unit}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="kg">Kilograms (kg)</option>
                     <option value="g">Grams (g)</option>
@@ -197,7 +205,7 @@ const CreateProduce = () => {
 
                 {/* Price per Unit */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Price per Unit (KES)
                   </label>
                   <input
@@ -207,21 +215,25 @@ const CreateProduce = () => {
                     onChange={handleChange}
                     min="0"
                     step="0.01"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="Optional"
                   />
                 </div>
 
                 {/* Quality Grade */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Quality Grade
                   </label>
                   <select
                     name="quality_grade"
                     value={formData.quality_grade}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   >
                     <option value="">Select grade</option>
                     <option value="Premium">Premium</option>
@@ -233,7 +245,7 @@ const CreateProduce = () => {
 
                 {/* Available From */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Available From
                   </label>
                   <input
@@ -241,13 +253,15 @@ const CreateProduce = () => {
                     name="available_from"
                     value={formData.available_from}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Available Until */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Available Until
                   </label>
                   <input
@@ -255,13 +269,15 @@ const CreateProduce = () => {
                     name="available_until"
                     value={formData.available_until}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Location */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Location *
                   </label>
                   <input
@@ -270,14 +286,16 @@ const CreateProduce = () => {
                     value={formData.location}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="e.g., Kiambu, Nairobi"
                   />
                 </div>
 
                 {/* Image Upload */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Product Image (Optional)
                   </label>
                   <div className="mt-1 flex items-center gap-4">
@@ -285,18 +303,18 @@ const CreateProduce = () => {
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="block w-full text-sm text-gray-500
+                      className={`block w-full text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-lg file:border-0
                         file:text-sm file:font-semibold
                         file:bg-green-50 file:text-green-700
                         hover:file:bg-green-100
-                        cursor-pointer"
+                        cursor-pointer`}
                     />
                   </div>
                   {imagePreview && (
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600 mb-2">Preview:</p>
+                      <p className={`text-sm mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Preview:</p>
                       <img 
                         src={imagePreview} 
                         alt="Preview" 
@@ -304,14 +322,14 @@ const CreateProduce = () => {
                       />
                     </div>
                   )}
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     Max size: 5MB. Supported formats: JPEG, PNG, GIF, WebP
                   </p>
                 </div>
 
                 {/* Description */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Description
                   </label>
                   <textarea
@@ -319,7 +337,9 @@ const CreateProduce = () => {
                     value={formData.description}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'
+                    }`}
                     placeholder="Additional details about your produce..."
                   />
                 </div>
@@ -337,7 +357,9 @@ const CreateProduce = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/dashboard')}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-medium transition"
+                  className={`flex-1 py-3 rounded-lg font-medium transition ${
+                    darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                  }`}
                 >
                   Cancel
                 </button>
@@ -346,7 +368,7 @@ const CreateProduce = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

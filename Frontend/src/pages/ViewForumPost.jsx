@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
+import { useSettings } from '../contexts/SettingsContext';
 import { getForumPostById, recordForumPostView, getPostComments, createComment, deleteComment, deleteForumPost } from '../services/forumService';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -8,6 +9,7 @@ const ViewForumPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const { darkMode } = useSettings();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -102,30 +104,28 @@ const ViewForumPost = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8 text-center`}>
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading discussion...</p>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading discussion...</p>
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-8">
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-md p-8`}>
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Discussion Not Found</h2>
-                <p className="text-gray-600 mb-6">{error || 'This discussion could not be found.'}</p>
+                <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Discussion Not Found</h2>
+                <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{error || 'This discussion could not be found.'}</p>
                 <Link
                   to="/forum"
                   className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition"
@@ -136,16 +136,14 @@ const ViewForumPost = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   const isAuthor = user?.user_id === post.user_id;
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
@@ -160,9 +158,9 @@ const ViewForumPost = () => {
           </Link>
 
           {/* Post Card */}
-          <div className="bg-white rounded-lg shadow-lg mb-6">
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg mb-6`}>
             {/* Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className={`p-6 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
               <div className="flex items-center justify-between mb-4">
                 <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded">
                   {post.category}
@@ -177,10 +175,10 @@ const ViewForumPost = () => {
                 )}
               </div>
               
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">{post.title}</h1>
+              <h1 className={`text-3xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{post.title}</h1>
 
               {/* Author Info */}
-              <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className={`flex items-center gap-3 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 <div className="flex items-center gap-2">
                   <div className="bg-blue-100 rounded-full p-2">
                     <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +186,7 @@ const ViewForumPost = () => {
                     </svg>
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-800">{post.user_name}</p>
+                    <p className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{post.user_name}</p>
                     <p className="text-xs capitalize">{post.user_type}</p>
                   </div>
                 </div>
@@ -211,15 +209,15 @@ const ViewForumPost = () => {
 
             {/* Content */}
             <div className="p-6">
-              <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <div className={`leading-relaxed whitespace-pre-line ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
                 {post.content}
               </div>
             </div>
           </div>
 
           {/* Comments Section */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-6`}>
+            <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
               Comments ({comments.length})
             </h2>
 
@@ -230,7 +228,9 @@ const ViewForumPost = () => {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   rows="3"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'
+                  }`}
                   placeholder="Share your thoughts..."
                   required
                 />
@@ -245,8 +245,8 @@ const ViewForumPost = () => {
                 </div>
               </form>
             ) : (
-              <div className="mb-8 bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                <p className="text-gray-600 mb-3">Please log in to join the discussion</p>
+              <div className={`mb-8 border rounded-lg p-4 text-center ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Please log in to join the discussion</p>
                 <Link
                   to="/login"
                   className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
@@ -258,7 +258,7 @@ const ViewForumPost = () => {
 
             {/* Comments List */}
             {comments.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className={`text-center py-8 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 <p>No comments yet. Be the first to comment!</p>
               </div>
             ) : (
@@ -267,14 +267,14 @@ const ViewForumPost = () => {
                   const isCommentAuthor = user?.user_id === comment.user_id;
                   
                   return (
-                    <div key={comment.comment_id} className="border-l-4 border-blue-200 pl-4 py-2">
+                    <div key={comment.comment_id} className={`border-l-4 pl-4 py-2 ${darkMode ? 'border-blue-800' : 'border-blue-200'}`}>
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="font-semibold text-gray-800">{comment.user_name}</span>
+                          <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{comment.user_name}</span>
                           <span className="text-gray-400">•</span>
-                          <span className="text-gray-500 capitalize text-xs">{comment.user_type}</span>
+                          <span className={`capitalize text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{comment.user_type}</span>
                           <span className="text-gray-400">•</span>
-                          <span className="text-gray-500 text-xs">
+                          <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                             {new Date(comment.created_at).toLocaleDateString()}
                           </span>
                         </div>
@@ -287,7 +287,7 @@ const ViewForumPost = () => {
                           </button>
                         )}
                       </div>
-                      <p className="text-gray-700">{comment.comment_text}</p>
+                      <p className={`${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>{comment.comment_text}</p>
                     </div>
                   );
                 })}
@@ -296,7 +296,7 @@ const ViewForumPost = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
