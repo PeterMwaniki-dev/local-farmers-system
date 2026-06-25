@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
 import { geocodeLocation, fetchWeatherForecast } from '../services/weatherService';
 import LocationSelector from '../components/LocationSelector';
+import Layout from '../components/Layout';
 
 // Helper function to get weather description from WMO code
 const getWeatherDescription = (code) => {
@@ -79,7 +80,7 @@ const WeatherPage = () => {
   }, [location]);
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -107,30 +108,34 @@ const WeatherPage = () => {
           </div>
         ) : weather ? (
           <>
-            {/* Current Weather */}
-            <div className={`p-8 rounded-xl shadow-lg mb-8 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            {/* Current Weather with Green Theme */}
+            <div className={`p-8 rounded-xl shadow-lg mb-8 ${
+              darkMode 
+                ? 'bg-gradient-to-r from-green-900/30 to-green-800/30 border border-green-700/50' 
+                : 'bg-gradient-to-r from-green-50 to-green-100 border border-green-200'
+            }`}>
               <div className="flex flex-col md:flex-row justify-between items-center">
                 <div>
-                  <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-green-300' : 'text-green-800'}`}>
                     {location}, Kenya
                   </h2>
-                  <p className={`text-6xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-6xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-green-900'}`}>
                     {Math.round(weather.current.temperature_2m)}°C
                   </p>
-                  <p className={`text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <p className={`text-lg ${darkMode ? 'text-green-200' : 'text-green-700'}`}>
                     {getWeatherDescription(weather.current.weather_code)}
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-6 md:mt-0">
-                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                    <p className={`text-sm uppercase ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Wind Speed</p>
-                    <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-green-800/30' : 'bg-green-200/50'}`}>
+                    <p className={`text-sm uppercase ${darkMode ? 'text-green-300' : 'text-green-700'}`}>Wind Speed</p>
+                    <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-900'}`}>
                       {weather.current.wind_speed_10m} km/h
                     </p>
                   </div>
-                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                    <p className={`text-sm uppercase ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Rain Probability</p>
-                    <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-green-800/30' : 'bg-green-200/50'}`}>
+                    <p className={`text-sm uppercase ${darkMode ? 'text-green-300' : 'text-green-700'}`}>Rain Probability</p>
+                    <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-900'}`}>
                       {weather.daily.precipitation_probability_max?.[0]}%
                     </p>
                   </div>
@@ -147,7 +152,11 @@ const WeatherPage = () => {
                 {weather.daily.time.map((date, index) => (
                   <div
                     key={index}
-                    className={`p-4 rounded-lg text-center ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}
+                    className={`p-4 rounded-lg text-center ${
+                      darkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600' 
+                        : `${index === 0 ? 'bg-green-100' : 'bg-gray-100'} hover:bg-gray-200`
+                    }`}
                   >
                     <p className={`font-medium mb-2 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                       {formatDate(date)}
@@ -172,35 +181,35 @@ const WeatherPage = () => {
                 Agricultural Metrics
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-green-600'}`}>
                     Soil Moisture (0-10cm)
                   </p>
-                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-800'}`}>
                     {weather.hourly.soil_moisture_0_to_10cm?.[0]?.toFixed(1)}%
                   </p>
                 </div>
-                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-green-600'}`}>
                     Soil Temperature (0-10cm)
                   </p>
-                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-800'}`}>
                     {Math.round(weather.hourly.soil_temperature_0_to_10cm?.[0])}°C
                   </p>
                 </div>
-                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-green-600'}`}>
                     Wind Direction
                   </p>
-                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-800'}`}>
                     {weather.current.wind_direction_10m}°
                   </p>
                 </div>
-                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-sm uppercase mb-2 ${darkMode ? 'text-gray-400' : 'text-green-600'}`}>
                     Daily Precipitation
                   </p>
-                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-green-800'}`}>
                     {weather.daily.precipitation_sum?.[0]?.toFixed(1)} mm
                   </p>
                 </div>
@@ -209,7 +218,7 @@ const WeatherPage = () => {
           </>
         ) : null}
       </div>
-    </div>
+    </Layout>
   );
 };
 
