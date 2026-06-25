@@ -197,19 +197,19 @@ npm run dev
 The system comes with pre-configured test accounts:
 
 **Farmer:**
-- Email: alice.muthoni@test.com
-- Password: alice123
+- Email: reubenmwaniki@gmail.com
+- Password: password123
 
 **Buyer:**
-- Email: david.omondi@test.com
+- Email: petermbugua3000@gmail.com
 - Password: password123
 
 **Expert:**
-- Email: carol.wanjiru@test.com
+- Email: dresthernaiyanoi@gmail.com
 - Password: password123
 
 **Admin:**
-- Email: admin@farmershub.com
+- Email: admin@sonnetshamba.com
 - Password: admin123
 
 ##  Project Structure
@@ -270,7 +270,3 @@ This project is licensed under the MIT License.
 - Built to empower Kenyan smallholder farmers
 - Inspired by the need to connect farmers directly with markets
 - Developed using modern web technologies
-
----
-
- If you found this project helpful, please give it a star!
